@@ -8,7 +8,7 @@ namespace SimpleMedia{
      public void Start( int port = 8000){
         Type[] types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
         foreach( Type t in types ){
-            if( t.IsSubclassOf(typeof(Page)) ){
+            if(t.IsSubclassOf(typeof(Page)) ){
                 pages.Add((Page)Activator.CreateInstance(t));
             }
         }
