@@ -1,0 +1,9 @@
+devcontainer.json
+/workspaces/Simple-Media/SimpleMedia/bin
+SimpleMedia/bin
+SimpleMedia/obj
+run.sh
+.devcontainer/docker-compose.yml
+.devcontainer/Dockerfile
+.vscode/launch.json
+.vscode/tasks.json
