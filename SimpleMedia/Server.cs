@@ -34,5 +34,12 @@ namespace SimpleMedia{
         }
         return "404 Not Found";
     }
+
+        internal static string RenderFile(string v)
+        {
+            String s = File.ReadAllText(v);
+            //Todo rendering
+            return s;
+        }
     }
 }
