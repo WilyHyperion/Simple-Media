@@ -2,26 +2,27 @@ using System.Net;
 using System;
 namespace SimpleMedia.Abstract;
 public abstract class Page {
-    public virtual string getResponse(HttpListenerRequest request){
+
+    public virtual string getResponse(HttpListenerRequest request, HttpListenerResponse response){
         switch(request.HttpMethod){
             case "GET":
-                return Get(request);
+                return Get(request, response);
             case "POST":
-                return Post(request);
+                return Post(request, response);
             default:
-                return InvalidedMethod(request);
+                return InvalidedMethod(request, response);
         }
     }
 
-    private string InvalidedMethod(HttpListenerRequest request)
+    private string InvalidedMethod(HttpListenerRequest request, HttpListenerResponse response)
     {
         return "Invalid Method";
     }
 
-    public virtual string Get(HttpListenerRequest request){
-        return "Invalid Method";
+    public virtual string Get(HttpListenerRequest request, HttpListenerResponse response){
+        return "Invalid Method";    
     }
-    public virtual string Post(HttpListenerRequest request){
+    public virtual string Post(HttpListenerRequest request, HttpListenerResponse response){
         return "Invalid Method";
     }
     public virtual string GetUrl(){
@@ -31,12 +32,11 @@ public abstract class Page {
         return false;
     }
     public virtual bool isCurrentPage(HttpListenerRequest request){
-        if(LoginRequired() && LoginManager.LoggedIn(request) == false){
-            return false;
-        }
+    //  if(LoginRequired() && LoginManager.LoggedIn(request) == false){
+     //       return false;
+        //}
         string s = request.Url.AbsolutePath.ToLower();
         string t =   this.GetUrl().ToLower();
-        Console.WriteLine($"Comparing {s} to {t}");
         return s == t;
     }
 }

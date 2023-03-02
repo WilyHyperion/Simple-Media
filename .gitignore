@@ -7,3 +7,4 @@ run.sh
 .devcontainer/Dockerfile
 .vscode/launch.json
 .vscode/tasks.json
+SimpleMedia/Database.db

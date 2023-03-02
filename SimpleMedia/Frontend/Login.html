@@ -15,7 +15,14 @@
         max-width: 800px;
         margin: 0 auto;
       }
-
+      .error{
+        position: relative;
+        width: 100%;
+        text-align: center;
+        padding-bottom: 50px;
+        color: red;
+        z-index: 50;
+      }
       h2 {
         text-align: center;
         color: #333;
@@ -75,17 +82,44 @@
     </style>
   </head>
   <body>
-    <form>
+    <script>
+      function login() {
+        let u =document.getElementById("username").value;
+        let p = document.getElementById("password").value;
+        //make a post request to the server with this data
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", window.location.href, true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState != 4) {
+               return;
+              }
+            if(xhr.responseText == "fail"){
+              alert("Login Failed");
+              return false;
+            }
+            // /xhr.responseText
+            alert("text + " + xhr.responseText);
+            document.cookie = "LoginToken=" + xhr.responseText + "; domain=" + window.location.hostname + ";path = /";
+        }
+        let data = JSON.stringify({ "username": u, "password": p });
+        xhr.send(data);
+        return true;
+      }
+      </script>
+    <form id = "LoginForm" onsubmit="return login();">
       <h2>Login</h2>
+      <div class="error"></div>
+
       <div class="form-group">
-        <input type="text" placeholder="" required />
+        <input id = "username" type="text" placeholder="" required />
         <label for="username">Username</label>
       </div>
       <div class="form-group">
-        <input type="password" placeholder="" required />
+        <input id = "password" type="password" placeholder="" required />
         <label for="password">Password</label>
       </div>
       <button type="submit">Login</button>
     </form>
-  </body>
+    </body>
 </html>

@@ -9,7 +9,7 @@ namespace SimpleMedia.Pages
 {
     public class Home : Page
     {
-        public override string Get(HttpListenerRequest request)
+        public override string Get(HttpListenerRequest request, HttpListenerResponse response)
         {
             return Server.RenderFile("Frontend/Home.html");
         }
