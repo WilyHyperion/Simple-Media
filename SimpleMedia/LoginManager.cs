@@ -2,14 +2,33 @@ using System.Net;
 
 namespace SimpleMedia
 {
-    public class LoginManager
+    public static class LoginManager
     {
-        //TODO: Implement
+        public static User RequestUser(HttpListenerRequest r){
+            if(r.Cookies["LoginToken"] != null && r.Cookies["LoginToken"].Value != ""){
+                int token = 0;
+                try
+                {
+                    token = Int32.Parse(r.Cookies["LoginToken"].Value);
+                }
+                catch (System.FormatException)
+                {
+                    return null;    
+                }
+                foreach (User u in Database.objects)
+                {
+                    if (u.Token == token)
+                    {
+                        return u;
+                    }
+                }
+            }
+            return null;
+        }
         public static bool LoggedIn(HttpListenerRequest request)
         {
-            Console.WriteLine("Checking login:" + request.Cookies["LoginToken"]);
+
             if(request.Cookies["LoginToken"] != null && request.Cookies["LoginToken"].Value != ""){
-                Console.WriteLine("Token: " + request.Cookies["LoginToken"].Value);
                 int token = 0;
                 try
                 {
@@ -19,16 +38,16 @@ namespace SimpleMedia
                 {
                     return false;    
                 }
+                Console.WriteLine("Token: " + token);
                 foreach (User u in Database.objects)
                 {
-                    Console.WriteLine("User token: " + u.Token);
                     if (u.Token == token)
                     {
                         return true;
                     }
                 }
             }
-            Console.WriteLine("Not logged in");
+            Console.WriteLine("Not logged in:" + request.Cookies["LoginToken"].Value);
             return false;
         }
         public static bool CreateUser(String username, String password)
@@ -42,7 +61,6 @@ namespace SimpleMedia
 
         private static bool vaildPassword(string password)
         {
-            //TODO checks
             return true;
         }
 
@@ -57,17 +75,24 @@ namespace SimpleMedia
             }
             return true;
         }
-        public static User Login(String username, String password, HttpListenerRequest request)
+        public static User Login(String username, String password, HttpListenerRequest request, HttpListenerResponse r)
         {
             foreach (User u in Database.objects)
             {
                 if (u.Username == username && u.Password == password)
                 {
+                    r.SetCookie(new Cookie("LoginToken", u.Token.ToString()));
                     return u;
+
                 }
             }
+
             return null;
         }
 
+        internal static void Logout(HttpListenerResponse r)
+        {
+            r.SetCookie(new Cookie("LoginToken", "out"));
+        }
     }
 }

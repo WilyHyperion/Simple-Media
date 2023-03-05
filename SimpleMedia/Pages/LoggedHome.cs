@@ -2,16 +2,12 @@ using System.Net;
 using SimpleMedia;
 using SimpleMedia.Abstract;
 
-public class LoggedHome : Page
+public class LoggedHome : LoggedPage
 {
-    public override string Get(HttpListenerRequest request, HttpListenerResponse response)
+    public override string GetLogged(HttpListenerRequest request, HttpListenerResponse response)
     {
-        if (!LoginManager.LoggedIn(request))
-        {
-            return Server.Redirect("/Login",request, response);
-            
-        }
-        Console.WriteLine("Logged in");
-        return Server.RenderFile("Frontend/LoggedHome.html");
+        return Server.RenderFile("Frontend/LoggedHome.html", new Dictionary<string, string>(){
+            {"USER", LoginManager.RequestUser(request).Username}
+        });
     }
 }

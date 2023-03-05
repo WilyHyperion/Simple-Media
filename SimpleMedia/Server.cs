@@ -9,8 +9,12 @@ namespace SimpleMedia{
      public void Start( int port = 8000){
         Type[] types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
         foreach( Type t in types ){
-            if(t.IsSubclassOf(typeof(Page)) ){
+            if(t.IsSubclassOf(typeof(Page))){
+                try{
                 pages.Add((Page)Activator.CreateInstance(t));
+                }catch(Exception e){
+                    Console.WriteLine("Failed to create a page: " + e.Message);
+                }
             }
         }
         listener.Prefixes.Add($"http://{DOMAIN}:{port}/");
@@ -38,15 +42,23 @@ namespace SimpleMedia{
         return "404 Not Found";
     }
 
+        internal static string RenderFile(string v, Dictionary<string, string> p)
+        {
+            String s = File.ReadAllText(v);
+            foreach (KeyValuePair<string, string> entry in p)
+            {
+                s = s.Replace("{{" + entry.Key + "}}", entry.Value);
+            }
+            return s;
+        }
         internal static string RenderFile(string v)
         {
             String s = File.ReadAllText(v);
             return s;
         }
-        internal static string Redirect(string v, HttpListenerRequest re, HttpListenerResponse r)
+        internal static string Redirect(string v)
         {
-            r.Redirect(v);
-
+            Console.WriteLine("Redirecting to " + v);
             return File.ReadAllText("Frontend/Redirect.html").Replace("{{URL}}", v);
         }
     }

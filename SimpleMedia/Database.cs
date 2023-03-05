@@ -14,7 +14,7 @@ public static class Database{
         }
         File.WriteAllText(path, data);
     }
-    //TODO seprate lists for each ISaveable type
+    //TODO seprate lists for each ISaveable type,
     public static void LoadAllObjects(){
         if(!File.Exists(path)) return;
         String data = File.ReadAllText(path);

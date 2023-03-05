@@ -19,15 +19,11 @@ namespace SimpleMedia.Pages
             string username = data["username"].ToString();
             string password = data["password"].ToString();
             Console.WriteLine("Login attempt: " + username + " " + password);
-
-            Console.WriteLine($"Username: {username} Password: {password}");
-            User u = LoginManager.Login(username, password, request);
+            User u = LoginManager.Login(username, password, request, response);
             if (u != null)
             {
-                Console.WriteLine("Login successful");
                 return ""+u.Token;
             }
-            Console.WriteLine("Login failed");
             return "fail";
         }
     }
