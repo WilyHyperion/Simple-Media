@@ -11,6 +11,9 @@ namespace SimpleMedia.Pages
     public class Login : Page
     {
         public override string Get(HttpListenerRequest request, HttpListenerResponse response){
+            if(LoginManager.LoggedIn(request)){
+                return Server.Redirect("/LoggedHome");
+            }
             return Server.RenderFile("Frontend/Login.html");
         }
         public override string Post(HttpListenerRequest request, HttpListenerResponse response){

@@ -56,6 +56,11 @@ namespace SimpleMedia{
             String s = File.ReadAllText(v);
             return s;
         }
+        /// <summary>
+        /// returns a page that redirects to the given url 
+        /// </summary>
+        /// <param name="v">the url</param>
+        /// <returns></returns>
         internal static string Redirect(string v)
         {
             Console.WriteLine("Redirecting to " + v);

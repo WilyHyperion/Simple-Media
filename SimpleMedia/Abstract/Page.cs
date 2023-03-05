@@ -20,7 +20,7 @@ public abstract class Page {
     }
 
     public virtual string Get(HttpListenerRequest request, HttpListenerResponse response){
-        return "Invalid Method";    
+        return "Invalid Method";
     }
     public virtual string Post(HttpListenerRequest request, HttpListenerResponse response){
         return "Invalid Method";

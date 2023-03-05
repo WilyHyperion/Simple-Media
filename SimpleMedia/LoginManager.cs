@@ -36,7 +36,7 @@ namespace SimpleMedia
                 }
                 catch (System.FormatException)
                 {
-                    return false;    
+                    return false;
                 }
                 Console.WriteLine("Token: " + token);
                 foreach (User u in Database.objects)
@@ -47,7 +47,6 @@ namespace SimpleMedia
                     }
                 }
             }
-            Console.WriteLine("Not logged in:" + request.Cookies["LoginToken"].Value);
             return false;
         }
         public static bool CreateUser(String username, String password)
@@ -86,7 +85,6 @@ namespace SimpleMedia
 
                 }
             }
-
             return null;
         }
 
