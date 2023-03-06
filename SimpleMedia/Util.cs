@@ -33,7 +33,7 @@ public static class Util{
         catch (System.Exception)
         {
             Console.WriteLine("Error reading request body");
-            return "asdasds";
+            return "";   
         }
         return body;
     }
