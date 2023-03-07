@@ -1,6 +1,9 @@
 using System.Net;
 
 public static class Util{
+    public static byte[] GetBytes(this string str){
+        return System.Text.Encoding.UTF8.GetBytes(str);
+    }
     public static int GetStableHashCode(this string str)
     {
         unchecked

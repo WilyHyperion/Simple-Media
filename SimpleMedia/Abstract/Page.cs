@@ -3,7 +3,7 @@ using System;
 namespace SimpleMedia.Abstract;
 public abstract class Page {
 
-    public virtual string getResponse(HttpListenerRequest request, HttpListenerResponse response){
+    public virtual byte[] getResponse(HttpListenerRequest request, HttpListenerResponse response){
         switch(request.HttpMethod){
             case "GET":
                 return Get(request, response);
@@ -14,18 +14,18 @@ public abstract class Page {
         }
     }
 
-    private string InvalidedMethod(HttpListenerRequest request, HttpListenerResponse response)
+    private byte[] InvalidedMethod(HttpListenerRequest request, HttpListenerResponse response)
     {
-        return "Invalid Method";
+        return "Invalid Method".GetBytes();
     }
 
-    public virtual string Get(HttpListenerRequest request, HttpListenerResponse response){
-        return "Invalid Method";
+    public virtual byte[] Get(HttpListenerRequest request, HttpListenerResponse response){
+        return "Invalid Method".GetBytes();
     }
-    public virtual string Post(HttpListenerRequest request, HttpListenerResponse response){
-        return "Invalid Method";
+    public virtual byte[] Post(HttpListenerRequest request, HttpListenerResponse response){
+        return "Invalid Method".GetBytes();
     }
-    public virtual string GetUrl(){
+    public virtual String GetUrl(){
         return "/" + this.GetType().Name.Replace(".", "/");
     }
     public virtual bool LoginRequired(){

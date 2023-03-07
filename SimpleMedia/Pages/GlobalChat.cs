@@ -6,13 +6,13 @@ using SimpleMedia.Abstract;
 public class Chat : LoggedPage
 {
     public static List<string> Messages = new List<string>(); 
-    public override String GetLogged(HttpListenerRequest request, HttpListenerResponse response)
+    public override byte[] GetLogged(HttpListenerRequest request, HttpListenerResponse response)
     {
         Messages.Add("Hello World!");
         Messages.Add("ASDASDSADSADSA");
         return Server.RenderFile("Frontend/GlobalChat.html");
     }
-    public override string Post(HttpListenerRequest request, HttpListenerResponse response)
+    public override byte[] Post(HttpListenerRequest request, HttpListenerResponse response)
     {
         if(request.Headers["type"] == "message")
         {
@@ -28,8 +28,8 @@ public class Chat : LoggedPage
                     break;
                 r += Messages[i] + "\n";
             }
-            return r;
+            return r.GetBytes();
         }
-        return "";
+        return new byte[1];
     }
 }

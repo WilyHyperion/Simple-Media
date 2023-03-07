@@ -24,48 +24,51 @@ namespace SimpleMedia{
             HttpListenerContext context = listener.GetContext();
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
-            String r = getResponse(request, response);
+            Byte[] r = getResponse(request, response);
             Console.WriteLine("Request to: " + request.Url + " Type of request: " + request.HttpMethod);
-            //TODO type checking here
+            String rs = System.Text.Encoding.Default.GetString(r);
+            if(rs.Contains("<!DOCTYPE html>")){
+                response.AddHeader("Content-Type", "text/html");
+            }
             response.AddHeader("Content-Type", "text/html");
-            response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes(r));
+            response.OutputStream.Write(r, 0, r.Length);
             response.OutputStream.Close();
          }
       }
       List<Page> pages = new List<Page>();
-      public string getResponse(HttpListenerRequest request, HttpListenerResponse response){
+      public byte[] getResponse(HttpListenerRequest request, HttpListenerResponse response){
         //TODO weights
         foreach( Page p in pages ){
             if( p.isCurrentPage(request)){
                 return p.getResponse(request, response);
             }
         }
-        return "404 Not Found";
+        return "404 Not Found".GetBytes();
     }
 
-        internal static string RenderFile(string v, Dictionary<string, string> p)
+        internal static byte[] RenderFile(string v, Dictionary<string, string> p)
         {
             String s = File.ReadAllText(v);
             foreach (KeyValuePair<string, string> entry in p)
             {
                 s = s.Replace("{{" + entry.Key + "}}", entry.Value);
             }
-            return s;
+            return s.GetBytes();
         }
-        internal static string RenderFile(string v)
+        internal static byte[] RenderFile(string v)
         {
             String s = File.ReadAllText(v);
-            return s;
+            return s.GetBytes();
         }
         /// <summary>
         /// returns a page that redirects to the given url 
         /// </summary>
         /// <param name="v">the url</param>
         /// <returns></returns>
-        internal static string Redirect(string v)
+        internal static byte[] Redirect(string v)
         {
             Console.WriteLine("Redirecting to " + v);
-            return File.ReadAllText("Frontend/Redirect.html").Replace("{{URL}}", v);
+            return File.ReadAllText("Frontend/Redirect.html").Replace("{{URL}}", v).GetBytes();
         }
     }
 }

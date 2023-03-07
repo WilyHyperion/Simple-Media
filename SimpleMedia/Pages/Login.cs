@@ -10,13 +10,13 @@ namespace SimpleMedia.Pages
 {
     public class Login : Page
     {
-        public override string Get(HttpListenerRequest request, HttpListenerResponse response){
+        public override byte[] Get(HttpListenerRequest request, HttpListenerResponse response){
             if(LoginManager.LoggedIn(request)){
                 return Server.Redirect("/LoggedHome");
             }
             return Server.RenderFile("Frontend/Login.html");
         }
-        public override string Post(HttpListenerRequest request, HttpListenerResponse response){
+        public override byte[] Post(HttpListenerRequest request, HttpListenerResponse response){
             string body = Util.ReadRequestBody(request);
             Dictionary<string, dynamic> data = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(body);
             string username = data["username"].ToString();
@@ -25,9 +25,9 @@ namespace SimpleMedia.Pages
             User u = LoginManager.Login(username, password, request, response);
             if (u != null)
             {
-                return ""+u.Token;
+                return (""+u.Token).GetBytes();
             }
-            return "fail";
+            return "fail".GetBytes();
         }
     }
 }
