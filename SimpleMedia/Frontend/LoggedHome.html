@@ -1,24 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-        <style>
-            .h1{
-                text-align: center;
-                color: #333;
-            }
-            .p{
-                text-align: center;
-                color: #333;
-            }
-            
-        </style>
+    <style>
+        .nav {
+            list-style: none;
+            margin: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .nav li {
+            float: left;
+            margin: 5px;
+        }
+
+        .nav li a {
+            color: white;
+            padding: 20px 10px;
+            text-decoration: none;
+        }
+
+        .nav li a:hover {
+            background-color: #111;
+        }
+
+        .h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .p {
+            text-align: center;
+            color: #333;
+        }
+
+        .profile {
+            background: none;
+            color: inherit;
+            border: none;
+            font: inherit;
+            cursor: pointer;
+            outline: inherit;
+            padding-left: 60px;
+        }
+
+        .ProfileMenu {
+            left: 100%;
+            transform: translateX(-110%);
+            background-color: green;
+            border-radius: 10px;
+            width: 200px;
+            text-align: center;
+            padding: 10px;
+            position: absolute;
+        }
+        .Hidden{
+            display: none;
+        }
+    </style>
 </head>
+
 <body>
+    <ol class="nav">
+        <li><a href="/GlobalChat">GC</a></li>
+        <li><a href="/??">??</a></li>
+        <li><a href="/???">???</a></li>
+        <li><a href="/????">????</a></li>
+        <li><a href="/?????">?????</a></li>
+        <li style="float: right;"><button class="profile" ; button onclick="OpenProfile()">Profile</button>
+    </li>
+    </ol>
+    <div class="ProfileMenu Hidden">
+        <p>{{USER}} </p>
+        <img src="https://picsum.photos/300/300" width="100" height="100" alt="Profile Picture">
+        <p><a href="/Logout">Logout</a>
+        </div>
     <h1>Home</h1>
     <p>Welcome to the home page, {{USER}} </p>
+    <script>
+        var menuOpen = true;
+        function OpenProfile() {
+                menuOpen = !menuOpen;
+                if (menuOpen) {
+                    document.getElementsByClassName("ProfileMenu")[0].classList.add("Hidden");
+                } else {
+                    document.getElementsByClassName("ProfileMenu")[0].classList.remove("Hidden");
+                }
+        }
+    </script>
 </body>
+
 </html>

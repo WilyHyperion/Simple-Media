@@ -95,16 +95,16 @@
                return;
               }
             if(xhr.responseText == "fail"){
-              alert("Login Failed");
+              document.getElementsByClassName("error")[0].innerHTML = "Invalid username or password";
               return false;
             }
             // /xhr.responseText
-            alert("text + " + xhr.responseText);
+            window.location.href = "/LoggedHome";
             document.cookie = "LoginToken=" + xhr.responseText + "; domain=" + window.location.hostname + ";path = /";
         }
         let data = JSON.stringify({ "username": u, "password": p });
         xhr.send(data);
-        return true;
+        return false;
       }
       </script>
     <form id = "LoginForm" onsubmit="return login();">

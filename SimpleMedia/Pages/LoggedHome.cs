@@ -7,7 +7,8 @@ public class LoggedHome : LoggedPage
     public override string GetLogged(HttpListenerRequest request, HttpListenerResponse response)
     {
         return Server.RenderFile("Frontend/LoggedHome.html", new Dictionary<string, string>(){
-            {"USER", LoginManager.RequestUser(request).Username}
+            {"USER", LoginManager.RequestUser(request).Username},
+            {"PROFILEIMAGELOCATION", "/Static/" + LoginManager.RequestUser(request).Username}
         });
     }
 }

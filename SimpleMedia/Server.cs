@@ -25,6 +25,7 @@ namespace SimpleMedia{
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
             String r = getResponse(request, response);
+            Console.WriteLine("Request to: " + request.Url + " Type of request: " + request.HttpMethod);
             //TODO type checking here
             response.AddHeader("Content-Type", "text/html");
             response.OutputStream.Write(System.Text.Encoding.UTF8.GetBytes(r));
