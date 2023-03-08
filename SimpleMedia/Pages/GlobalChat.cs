@@ -17,18 +17,19 @@ public class Chat : LoggedPage
     {
         if(request.Headers["type"] == "send")
         {
-            //Console.WriteLine("Message: " + Util.ReadRequestBody(request));
             Messages.Add(new GlobalMessage(Util.ReadRequestBody(request), LoginManager.RequestUser(request)));
         }
         else if(request.Headers["type"] == "get")
         {
             int amount = int.Parse(request.Headers["amount"]);
             String r = "";
-            for(int i = 0; i < amount; i++)
+            for(int i = 0; i  < amount; i++)
             {
-                if(i >= Messages.Count)
+                if(i >= Messages.Count())
+                {
                     break;
-                r += Messages[i] + "\n";
+                }
+                r += Messages[Messages.Count() - 1 - i].ToString() + "\n";
             }
             return r.GetBytes();
         }

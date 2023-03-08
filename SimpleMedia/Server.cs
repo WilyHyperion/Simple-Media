@@ -1,59 +1,83 @@
 using System;
 using System.Net;
 using SimpleMedia.Abstract;
-namespace SimpleMedia{
-    public class Server{
-    public static Server Instance;
-    const string DOMAIN = "*";
-     public static HttpListener listener = new HttpListener();
-     public void Start( int port = 8000){
-        Type[] types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
-        foreach( Type t in types ){
-            if(t.IsSubclassOf(typeof(Page))){
-                try{
-                pages.Add((Page)Activator.CreateInstance(t));
-                }catch(Exception e){
+namespace SimpleMedia
+{
+    public class Server
+    {
+        public static bool Running = true;
+        public static Server Instance;
+        const string DOMAIN = "*";
+        public static HttpListener listener = new HttpListener();
+        public void Start(int port = 8000)
+        {
+            Type[] types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
+            foreach (Type t in types)
+            {
+                if (t.IsSubclassOf(typeof(Page)))
+                {
+                    try
+                    {
+                        pages.Add((Page)Activator.CreateInstance(t));
+                    }
+                    catch (Exception e)
+                    {
+                    }
                 }
             }
-        }
-        listener.Prefixes.Add($"http://{DOMAIN}:{port}/");
-        Console.WriteLine($"Server started on {port}");
-        listener.Start();
-        try{
-        while(listener.IsListening){
-            try{
-            HttpListenerContext context = listener.GetContext();
-            HttpListenerRequest request = context.Request;
-            HttpListenerResponse response = context.Response;
-            Byte[] r = getResponse(request, response);
-            Console.WriteLine("Request to: " + request.Url + " Type of request: " + request.HttpMethod);
-            String rs = System.Text.Encoding.Default.GetString(r);
-            if(rs.Contains("<!DOCTYPE html>")){
-                response.AddHeader("Content-Type", "text/html");
+            listener.Prefixes.Add($"http://{DOMAIN}:{port}/");
+            Console.WriteLine($"Server started on {port}");
+            listener.Start();
+            try
+            {
+                while (Running)
+                {
+                    try
+                    {
+                        HttpListenerContext context = listener.GetContext();
+                        HttpListenerRequest request = context.Request;
+                        HttpListenerResponse response = context.Response;
+                        Byte[] r = getResponse(request, response);
+                        Console.WriteLine("Request to: " + request.Url + " Type of request: " + request.HttpMethod);
+                        String rs = System.Text.Encoding.Default.GetString(r);
+                        if (rs.Contains("<!DOCTYPE html>"))
+                        {
+                            response.AddHeader("Content-Type", "text/html");
+                        }
+                        response.AddHeader("Content-Type", "text/html");
+                        response.OutputStream.Write(r, 0, r.Length);
+                        response.OutputStream.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Runtime Exc" + e);
+                        break;
+                    }
+                }
             }
-            response.AddHeader("Content-Type", "text/html");
-            response.OutputStream.Write(r, 0, r.Length);
-            response.OutputStream.Close();
-        }
-        catch(Exception e){
-            Console.WriteLine("Runtime Exc" + e);
-        }
-         }
-        }
-         catch(Exception e){
+            catch (Exception e)
+            {
                 Console.WriteLine("Failed: + " + e);
-         }
-     }
-      List<Page> pages = new List<Page>();
-      public byte[] getResponse(HttpListenerRequest request, HttpListenerResponse response){
-        //TODO weights
-        foreach( Page p in pages ){
-            if( p.isCurrentPage(request)){
-                return p.getResponse(request, response);
             }
+            Console.WriteLine("Server stopped, awaiting end call from event handler - Enter Y/N to end");   
+            while(true){
+                System.Threading.Thread.Sleep(1000);
+            }
+
         }
-        return "404 Not Found".GetBytes();
-    }
+        List<Page> pages = new List<Page>();
+        public byte[] getResponse(HttpListenerRequest request, HttpListenerResponse response)
+        {
+            //TODO weights
+            foreach (Page p in pages)
+            {
+                if (p.isCurrentPage(request))
+                {
+                    return p.getResponse(request, response);
+                }
+            }
+            return "404 Not Found".GetBytes();
+        }
 
         internal static byte[] RenderFile(string v, Dictionary<string, string> p)
         {

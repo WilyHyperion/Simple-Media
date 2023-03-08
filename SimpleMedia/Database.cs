@@ -40,9 +40,11 @@ public static class Database{
                     var type = Type.GetType(reader.ReadString());
                     var count = reader.ReadInt32();
                     for(int i = 0; i < count; i++){
+                        if(type != null){
                         var obj = Activator.CreateInstance(type) as ISaveable;
                         obj.Load(reader.ReadBytes(reader.ReadInt32()));
                         AddObject(obj);
+                        }
                     }
                 }
             }
