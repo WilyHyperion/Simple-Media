@@ -10,7 +10,10 @@ public static class Database{
         }
         return new List<T>();
     }
-    private static string path = "Database.db";
+    private const string path = "Database.db";
+    public static void ClearDictionary(){
+        objects.Clear();
+    }
     private static Dictionary<Type, List<ISaveable>> objects = new Dictionary<Type, List<ISaveable>>();
     public static void AddObject(ISaveable obj){
         if(!objects.ContainsKey(obj.GetType())){
@@ -19,6 +22,7 @@ public static class Database{
         objects[obj.GetType()].Add(obj);
     }
     public static void SaveAllObjects(){
+        File.Delete(path);
         using(var stream = new FileStream(path, FileMode.Create)){
             using(var writer = new BinaryWriter(stream)){
                 foreach(var type in objects.Keys){
@@ -34,11 +38,15 @@ public static class Database{
         }
     }
     public static void LoadAllObjects(){
+        ClearDictionary();
+        if(!File.Exists(path)){
+            return;
+        }
         using(var stream = new FileStream(path, FileMode.Open)){
             using(var reader = new BinaryReader(stream)){
                 while(reader.BaseStream.Position != reader.BaseStream.Length){
                     var type = Type.GetType(reader.ReadString());
-                    var count = reader.ReadInt32();
+                    int count = reader.ReadInt32();
                     for(int i = 0; i < count; i++){
                         if(type != null){
                         var obj = Activator.CreateInstance(type) as ISaveable;

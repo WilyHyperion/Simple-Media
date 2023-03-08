@@ -64,8 +64,14 @@
             return response.text();
           })
           .then(function (text) {
+            if(text === undefined){
+              return;
+            }
             let html = "";
             for (let i = text.split("\n").length; i >= 0; i--) {
+              if(text.split("\n")[i] === undefined){
+                continue;
+              }
               html += "<li>" + text.split("\n")[i] + "</li>";
             }
             document.getElementById("chat").innerHTML = html;

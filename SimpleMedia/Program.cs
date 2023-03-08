@@ -1,7 +1,7 @@
 ﻿using SimpleMedia;
 Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eArgs) =>
 {
-    eArgs.Cancel = true;
+    eArgs.Cancel = false;
     Server.Running = false;
     Console.WriteLine("Enter Y to save database before exiting, N to exit without saving");
     string input = Console.ReadLine();
@@ -11,6 +11,8 @@ Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eArgs) =>
     }
     Environment.Exit(0);
 });
+
+SimpleMedia.Database.LoadAllObjects();
 if (args.Length > 0)
 {
     foreach (var arg in args)
@@ -38,7 +40,7 @@ if (args.Length > 0)
                 }
             }
         }
-        if (arg == "--ListUser")
+        if (arg == "--UserList")
         {
             foreach (var user in Database.GetObjects<User>())
             {

@@ -67,6 +67,7 @@ namespace SimpleMedia
         {
             if (vaildUsername(username) && vaildPassword(password))
             {
+                Console.WriteLine("Creating user: " + username);
                 Database.AddObject(new User(username, password));
                 return true;
             }

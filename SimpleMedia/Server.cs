@@ -59,7 +59,7 @@ namespace SimpleMedia
             {
                 Console.WriteLine("Failed: + " + e);
             }
-            Console.WriteLine("Server stopped, awaiting end call from event handler - Enter Y/N to end");   
+            Console.WriteLine("Server stopped, awaiting end call from event handler - Enter CTRL + C to start end sequence");   
             while(true){
                 System.Threading.Thread.Sleep(1000);
             }
