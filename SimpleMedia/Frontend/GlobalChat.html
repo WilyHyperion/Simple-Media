@@ -1,56 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global Chat</title>
+    <style>
+      #chat {
+        background-color: #424B54;
+        list-style: none;
+        display: grid;
+        place-items: center;
+        height: 90%;
+        width: 100%;
+        overflow-y: scroll;
+      }
+      #chatContainer {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 70vh;
+        width: 100vw;
+      }
+      #chat li {
+        background-color: #424B54;
+        color: white;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 5px;
+      }
+      #message {
+        background-color: #424B54;
+        color: white;
+        padding-top: 5px;
+
+        border-top: 5px solid black;
+        width: 100%;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body>
     <h1>Global Chat</h1>
-    <li id = "chat">
-    </li>
-    <input type="text" id="message">
+    <div id="chatContainer">
+      <ol id="chat"></ol>
+      <input type="text" id="message" />
+    </div>
     <script>
-        setInterval(() => {
-            update();
-        }, 1000);
-        function update(){
-            try {
-            fetch(window.location.href, {
-                method: "POST",
-                headers: {
-                    "type": "get",
-                    "amount": "10"
-                }
-            })
-            .then(function (response) {
-                return response.text();
-            }).then(function (text) {
-                let html = "";
-                for(let i = 0; i < text.split("\n").length; i++){
-                    html += "<p>" + text.split("\n")[i] + "</p>";
-                }
-                document.getElementById("chat").innerHTML = html;
-            });
-        } catch (error) {
-            alert(error.message);
-        }
-    }
-    document.getElementById("message").addEventListener("keyup", function(event) {
-        if (event.keyCode === 13) {
+      setInterval(() => {
+        update();
+      }, 1000);
+      function update() {
+        fetch(window.location.href, {
+          method: "POST",
+          headers: {
+            type: "get",
+            amount: "10",
+          },
+        })
+          .then(function (response) {
+            return response.text();
+          })
+          .then(function (text) {
+            let html = "";
+            for (let i = text.split("\n").length; i >= 0; i--) {
+              html += "<li>" + text.split("\n")[i] + "</li>";
+            }
+            document.getElementById("chat").innerHTML = html;
+          });
+      }
+      document
+        .getElementById("message")
+        .addEventListener("keyup", function (event) {
+          if (event.keyCode === 13) {
             let m = document.getElementById("message");
+            document.getElementById("chat").innerHTML +=
+              "<li>" + m.value + "</li>";
             fetch(window.location.href, {
-                method: "POST",
-                headers: {
-                    "type": "send",
-                },
-                body: m.value
+              method: "POST",
+              headers: {
+                type: "send",
+              },
+              body: m.value,
             });
             m.value = "";
             event.preventDefault();
-        }
-    });
+          }
+        });
     </script>
-</body>
+  </body>
 </html>
