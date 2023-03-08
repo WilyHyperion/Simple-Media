@@ -34,17 +34,15 @@ namespace SimpleMedia{
             response.AddHeader("Content-Type", "text/html");
             response.OutputStream.Write(r, 0, r.Length);
             response.OutputStream.Close();
-            
         }
         catch(Exception e){
             Console.WriteLine("Runtime Exc" + e);
         }
          }
         }
-         catch(Exception e){ 
+         catch(Exception e){
                 Console.WriteLine("Failed: + " + e);
          }
-      
      }
       List<Page> pages = new List<Page>();
       public byte[] getResponse(HttpListenerRequest request, HttpListenerResponse response){
