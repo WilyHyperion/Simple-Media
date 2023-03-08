@@ -4,8 +4,21 @@ namespace SimpleMedia
 {
     public static class LoginManager
     {
-        public static User RequestUser(HttpListenerRequest r){
-            if(r.Cookies["LoginToken"] != null && r.Cookies["LoginToken"].Value != ""){
+        public static User GetUser(string username)
+        {
+            foreach (User u in Database.GetObjects<User>())
+            {
+                if (u.Username == username)
+                {
+                    return u;
+                }
+            }
+            return null;
+        }
+        public static User RequestUser(HttpListenerRequest r)
+        {
+            if (r.Cookies["LoginToken"] != null && r.Cookies["LoginToken"].Value != "")
+            {
                 int token = 0;
                 try
                 {
@@ -13,9 +26,9 @@ namespace SimpleMedia
                 }
                 catch (System.FormatException)
                 {
-                    return null;    
+                    return null;
                 }
-                foreach (User u in Database.objects)
+                foreach (User u in Database.GetObjects<User>())
                 {
                     if (u.Token == token)
                     {
@@ -28,7 +41,8 @@ namespace SimpleMedia
         public static bool LoggedIn(HttpListenerRequest request)
         {
 
-            if(request.Cookies["LoginToken"] != null && request.Cookies["LoginToken"].Value != ""){
+            if (request.Cookies["LoginToken"] != null && request.Cookies["LoginToken"].Value != "")
+            {
                 int token = 0;
                 try
                 {
@@ -39,7 +53,7 @@ namespace SimpleMedia
                     return false;
                 }
                 Console.WriteLine("Token: " + token);
-                foreach (User u in Database.objects)
+                foreach (User u in Database.GetObjects<User>())
                 {
                     if (u.Token == token)
                     {
@@ -51,7 +65,8 @@ namespace SimpleMedia
         }
         public static bool CreateUser(String username, String password)
         {
-            if(vaildUsername(username) && vaildPassword(password)){
+            if (vaildUsername(username) && vaildPassword(password))
+            {
                 Database.AddObject(new User(username, password));
                 return true;
             }
@@ -65,7 +80,7 @@ namespace SimpleMedia
 
         private static bool vaildUsername(string username)
         {
-            foreach (User u in Database.objects)
+            foreach (User u in Database.GetObjects<User>())
             {
                 if (u.Username == username)
                 {
@@ -76,7 +91,7 @@ namespace SimpleMedia
         }
         public static User Login(String username, String password, HttpListenerRequest request, HttpListenerResponse r)
         {
-            foreach (User u in Database.objects)
+            foreach (User u in Database.GetObjects<User>())
             {
                 if (u.Username == username && u.Password == password)
                 {

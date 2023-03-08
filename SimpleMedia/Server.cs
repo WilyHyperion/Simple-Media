@@ -5,7 +5,7 @@ namespace SimpleMedia{
     public class Server{
     public static Server Instance;
     const string DOMAIN = "*";
-     public HttpListener listener = new HttpListener();
+     public static HttpListener listener = new HttpListener();
      public void Start( int port = 8000){
         Type[] types = System.Reflection.Assembly.GetExecutingAssembly().GetTypes();
         foreach( Type t in types ){
@@ -13,14 +13,15 @@ namespace SimpleMedia{
                 try{
                 pages.Add((Page)Activator.CreateInstance(t));
                 }catch(Exception e){
-                    Console.WriteLine("Failed to create a page: " + e.Message);
                 }
             }
         }
         listener.Prefixes.Add($"http://{DOMAIN}:{port}/");
         Console.WriteLine($"Server started on {port}");
         listener.Start();
-        while(true){
+        try{
+        while(listener.IsListening){
+            try{
             HttpListenerContext context = listener.GetContext();
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
@@ -33,8 +34,18 @@ namespace SimpleMedia{
             response.AddHeader("Content-Type", "text/html");
             response.OutputStream.Write(r, 0, r.Length);
             response.OutputStream.Close();
+            
+        }
+        catch(Exception e){
+            Console.WriteLine("Runtime Exc" + e);
+        }
          }
-      }
+        }
+         catch(Exception e){ 
+                Console.WriteLine("Failed: + " + e);
+         }
+      
+     }
       List<Page> pages = new List<Page>();
       public byte[] getResponse(HttpListenerRequest request, HttpListenerResponse response){
         //TODO weights

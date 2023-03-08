@@ -1,32 +1,51 @@
 namespace SimpleMedia;
+using System;
+using System.Collections.Generic;
+using System.IO;
+
 public static class Database{
-    public static string path = "Database.db";
-    public static List<ISaveable> objects = new List<ISaveable>();
+    public static List<T> GetObjects<T>(){
+        if(objects.ContainsKey(typeof(T))){
+            return objects[typeof(T)].Cast<T>().ToList();
+        }
+        return new List<T>();
+    }
+    private static string path = "Database.db";
+    private static Dictionary<Type, List<ISaveable>> objects = new Dictionary<Type, List<ISaveable>>();
     public static void AddObject(ISaveable obj){
-        objects.Add(obj);
-        SaveAllObjects();
+        if(!objects.ContainsKey(obj.GetType())){
+            objects.Add(obj.GetType(), new List<ISaveable>());
+        }
+        objects[obj.GetType()].Add(obj);
     }
     public static void SaveAllObjects(){
-        String data = "";
-        foreach(ISaveable obj in objects){
-            data += obj.GetType().AssemblyQualifiedName + "**";
-            data += obj.Save().Replace("%","@@@") + "%%%";
+        using(var stream = new FileStream(path, FileMode.Create)){
+            using(var writer = new BinaryWriter(stream)){
+                foreach(var type in objects.Keys){
+                    writer.Write(type.FullName);
+                    writer.Write(objects[type].Count);
+                    foreach(var obj in objects[type]){
+                        var data = obj.Save();
+                        writer.Write(data.Length);
+                        writer.Write(data);
+                    }
+                }
+            }
         }
-        File.WriteAllText(path, data);
     }
-    //TODO seprate lists for each ISaveable type,
     public static void LoadAllObjects(){
-        if(!File.Exists(path)) return;
-        String data = File.ReadAllText(path);
-
-        String[] split = data.Split("%%%");
-        foreach(String obj in split){
-            if(obj == "") continue;
-            String[] split2 = obj.Split("**");
-
-            ISaveable obj2 = Activator.CreateInstance(Type.GetType(split2[0])) as ISaveable;
-            obj2.Load(split2[1].Replace("@@@", "%%%"));
-            objects.Add(obj2);
+        using(var stream = new FileStream(path, FileMode.Open)){
+            using(var reader = new BinaryReader(stream)){
+                while(reader.BaseStream.Position != reader.BaseStream.Length){
+                    var type = Type.GetType(reader.ReadString());
+                    var count = reader.ReadInt32();
+                    for(int i = 0; i < count; i++){
+                        var obj = Activator.CreateInstance(type) as ISaveable;
+                        obj.Load(reader.ReadBytes(reader.ReadInt32()));
+                        AddObject(obj);
+                    }
+                }
+            }
         }
     }
 }

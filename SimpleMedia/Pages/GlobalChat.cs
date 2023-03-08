@@ -5,22 +5,24 @@ using System.Net;
 using SimpleMedia.Abstract;
 public class Chat : LoggedPage
 {
-    public static List<string> Messages = new List<string>(); 
+    public Chat(){
+        Messages = Database.GetObjects<GlobalMessage>();
+    }
+    public static List<GlobalMessage> Messages;
     public override byte[] GetLogged(HttpListenerRequest request, HttpListenerResponse response)
     {
-        Messages.Add("Hello World!");
-        Messages.Add("ASDASDSADSADSA");
         return Server.RenderFile("Frontend/GlobalChat.html");
     }
     public override byte[] Post(HttpListenerRequest request, HttpListenerResponse response)
     {
-        if(request.Headers["type"] == "message")
+        if(request.Headers["type"] == "send")
         {
-            Messages.Add(Util.ReadRequestBody(request));
+            //Console.WriteLine("Message: " + Util.ReadRequestBody(request));
+            Messages.Add(new GlobalMessage(Util.ReadRequestBody(request), LoginManager.RequestUser(request)));
         }
         else if(request.Headers["type"] == "get")
         {
-            int amount = 2;//int.Parse(request.Headers["amount"]);
+            int amount = int.Parse(request.Headers["amount"]);
             String r = "";
             for(int i = 0; i < amount; i++)
             {

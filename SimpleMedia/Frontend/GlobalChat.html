@@ -8,8 +8,9 @@
 </head>
 <body>
     <h1>Global Chat</h1>
-    <li>
+    <li id = "chat">
     </li>
+    <input type="text" id="message">
     <script>
         setInterval(() => {
             update();
@@ -19,22 +20,38 @@
             fetch(window.location.href, {   
                 method: "POST",
                 headers: {
-                    "type": "get"
+                    "type": "get",
+                    "amount": "10"
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                alert(data);
+            .then(function (response) {
+                return response.text();
+            }).then(function (text) {
                 let html = "";
-                for (let i = 0; i < data.length; i++) {
-                    html += `<li>${data[i].message}</li>`;
+                for(let i = 0; i < text.split("\n").length; i++){
+                    html += "<p>" + text.split("\n")[i] + "</p>";
                 }
-                document.querySelector("li").innerHTML = html;
+                document.getElementById("chat").innerHTML = html;
             });
         } catch (error) {
             alert(error.message);
         }
     }
+    document.getElementById("message").addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            alert("enter");
+            let m = document.getElementById("message");
+            fetch(window.location.href, {
+                method: "POST",
+                headers: {
+                    "type": "send",
+                },
+                body: m.value
+            });
+            m.value = "";
+            event.preventDefault();
+        }
+    });
     </script>
 </body>
 </html>

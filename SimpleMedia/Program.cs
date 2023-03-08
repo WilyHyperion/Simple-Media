@@ -1,6 +1,14 @@
 ﻿using SimpleMedia;
-
-SimpleMedia.Database.LoadAllObjects();
+Console.CancelKeyPress += (sender, eArgs) => {
+    
+    Console.WriteLine("Enter Y to save database before exiting, N to exit without saving");
+    string input = Console.ReadLine();
+    if(input == "Y"){
+        Database.SaveAllObjects();
+    }
+    Server.listener.Stop();
+    Environment.Exit(0);
+};
 if (args.Length > 0)
 {
     foreach (var arg in args)
@@ -23,16 +31,15 @@ if (args.Length > 0)
         }
         }
         if(arg == "--ListUser"){
-            foreach (User u in Database.objects)
-            {
-                Console.WriteLine(u.Username);
-                Console.WriteLine(u.Password);
-                Console.WriteLine(u.Token);
-                Console.WriteLine();
-            }
-        }
+            
+    }
+    else{
+        Console.WriteLine("Unknown argument: " + arg);
     }
 }
+}
+
+SimpleMedia.Database.LoadAllObjects();
 
 SimpleMedia.Server s = new SimpleMedia.Server();
 Server.Instance = s;
