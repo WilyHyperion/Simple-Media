@@ -22,7 +22,9 @@ public class CreateUser : Page
         if (LoginManager.CreateUser(username, password))
         {
             LoginManager.Login(username, password, request, response);
-            return File.ReadAllBytes("Frontend/CreateUserSuccess.html");
+            return Server.RenderFile("Frontend/CreateUserSuccess.html", new Dictionary<string, string>(){
+                {"USERNAME", username}
+            });
         }
         else{
             return "Failed".GetBytes();
