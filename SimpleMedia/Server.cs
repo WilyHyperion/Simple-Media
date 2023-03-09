@@ -37,12 +37,16 @@ namespace SimpleMedia
                         HttpListenerContext context = listener.GetContext();
                         HttpListenerRequest request = context.Request;
                         HttpListenerResponse response = context.Response;
-                        Byte[] r = getResponse(request, response);
                         Console.WriteLine("Request to: " + request.Url + " Type of request: " + request.HttpMethod);
+                        Byte[] r = getResponse(request, response);
+                        if(r == null) {
+                            Console.WriteLine("null response");
+                            continue;
+                        }
                         String rs = System.Text.Encoding.Default.GetString(r);
                         if (rs.Contains("<!DOCTYPE html>"))
                         {
-                            response.AddHeader("Content-Type", "text/html");
+                           // response.AddHeader("Content-Type", "text/html");
                         }
                         response.AddHeader("Content-Type", "text/html");
                         response.OutputStream.Write(r, 0, r.Length);

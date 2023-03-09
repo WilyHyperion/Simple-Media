@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,33 +13,33 @@
             font-size: 16px;
             color: #333;
         }
+
         h1 {
             font-size: 2em;
             color: #333;
             text-align: center;
         }
-
     </style>
 </head>
+
 <body>
     <h1>Welcome {{USERNAME}} , account created!</h1>
-    <input type="file" id="pfp" name="filename" onchange = "FileUpload()">
+    <input type="file" id="pfp" name="filename" onchange="FileUpload()">
     <img id="output" width="200" height="200">
     <script>
-        function FileUpload() {
+
+        async function FileUpload() {
             var reader = new FileReader();
-            reader.onload = function() {
+            reader.onload = function () {
                 var output = document.getElementById("output");
                 output.src = reader.result;
-                //make a post request to the backend to save the image
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", window.location.host + "/API/", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.send(reader.result);
-
             }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", (window.location.origin + "/api/changeprofile"), true);
+            xhr.send(await event.target.files[0].arrayBuffer());
             reader.readAsDataURL(event.target.files[0]);
         }
     </script>
 </body>
+
 </html>
