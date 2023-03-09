@@ -22,5 +22,23 @@
 </head>
 <body>
     <h1>Welcome {{USERNAME}} , account created!</h1>
+    <input type="file" id="pfp" name="filename" onchange = "FileUpload()">
+    <img id="output" width="200" height="200">
+    <script>
+        function FileUpload() {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById("output");
+                output.src = reader.result;
+                //make a post request to the backend to save the image
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", window.location.host + "/API/", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send(reader.result);
+
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 </body>
 </html>

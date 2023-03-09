@@ -17,7 +17,7 @@ public class Chat : LoggedPage
     {
         if(request.Headers["type"] == "send")
         {
-            Messages.Add(new GlobalMessage(Util.ReadRequestBody(request), LoginManager.RequestUser(request)));
+            Messages.Add(new GlobalMessage(Util.ReadRequestBody(request), LoginManager.GetUser(request)));
         }
         else if(request.Headers["type"] == "get")
         {

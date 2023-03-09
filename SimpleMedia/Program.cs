@@ -3,6 +3,7 @@ Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eArgs) =>
 {
     eArgs.Cancel = false;
     Server.Running = false;
+    Console.BackgroundColor = ConsoleColor.DarkRed;
     Console.WriteLine("Enter Y to save database before exiting, N to exit without saving");
     string input = Console.ReadLine();
     if (input == "Y")
@@ -40,7 +41,7 @@ if (args.Length > 0)
                 }
             }
         }
-        if (arg == "--UserList")
+        else if (arg == "--UserList")
         {
             foreach (var user in Database.GetObjects<User>())
             {

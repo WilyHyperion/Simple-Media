@@ -5,6 +5,7 @@ public class User : ISaveable
     public User(){
 
     }
+   public byte[] Profile;
     private string username;
     public string Username{
         get{ return username;}

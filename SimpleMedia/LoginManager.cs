@@ -15,7 +15,7 @@ namespace SimpleMedia
             }
             return null;
         }
-        public static User RequestUser(HttpListenerRequest r)
+        public static User GetUser(HttpListenerRequest r)
         {
             if (r.Cookies["LoginToken"] != null && r.Cookies["LoginToken"].Value != "")
             {
@@ -108,5 +108,6 @@ namespace SimpleMedia
         {
             r.SetCookie(new Cookie("LoginToken", "out"));
         }
+
     }
 }
