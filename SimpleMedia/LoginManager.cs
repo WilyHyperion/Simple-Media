@@ -94,8 +94,11 @@ namespace SimpleMedia
         {
             foreach (User u in Database.GetObjects<User>())
             {
+
+                Console.WriteLine("Login: " + username);
                 if (u.Username == username && u.Password == password)
                 {
+                    Console.WriteLine("logged: " + username);
                     r.SetCookie(new Cookie("LoginToken", u.Token.ToString()));
                     return u;
 

@@ -18,6 +18,10 @@ public class ChangeProfile : LoggedPage{
         request.InputStream.CopyTo(ms);
         byte[] data = ms.ToArray();
         u.Profile = data;
+        var s = File.Create("Default.jpeg");
+        s.Write(data, 0, data.Length);
+        s.Close();
+        s.Dispose();
         Console.WriteLine("Profile Changed");
         return "Success".GetBytes();
     }

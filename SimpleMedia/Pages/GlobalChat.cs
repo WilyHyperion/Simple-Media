@@ -5,6 +5,7 @@ using System.Net;
 using SimpleMedia.Abstract;
 public class Chat : LoggedPage
 {
+    List<HttpListenerResponse> listeners = new List<HttpListenerResponse>();
     public Chat(){
         Messages = Database.GetObjects<GlobalMessage>();
     }
@@ -17,7 +18,30 @@ public class Chat : LoggedPage
     {
         if(request.Headers["type"] == "send")
         {
-            Messages.Add(new GlobalMessage(Util.ReadRequestBody(request), LoginManager.GetUser(request)));
+            Console.WriteLine("Sending message");
+            GlobalMessage m = new GlobalMessage(Util.ReadRequestBody(request), LoginManager.GetUser(request));
+            Messages.Add(m);
+            for(int i = 0; i < listeners.Count(); i++)
+            {
+                HttpListenerResponse r = listeners[i];
+                if(r == null || !r.OutputStream.CanWrite)
+                {
+                    listeners.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+                r.OutputStream.Write(m.ToString().GetBytes(), 0, m.ToString().Length);
+                r.OutputStream.Close();
+                listeners.RemoveAt(i);
+                i--;
+            }
+            
+        }
+        else if (request.Headers["type"] == "register")
+        {
+            Console.WriteLine("Registering listener");
+            listeners.Add(response);
+            return null;
         }
         else if(request.Headers["type"] == "get")
         {
@@ -33,6 +57,6 @@ public class Chat : LoggedPage
             }
             return r.GetBytes();
         }
-        return new byte[1];
+        return null;
     }
 }

@@ -2,22 +2,26 @@ namespace SimpleMedia;
 public class User : ISaveable
 {
 
-    public User(){
-
+    public User()
+    {
     }
-   public byte[] Profile;
+    public byte[] Profile;
     private string username;
-    public string Username{
-        get{ return username;}
-        set{
+    public string Username
+    {
+        get { return username; }
+        set
+        {
             Token = (value + Password).GetStableHashCode();
             username = value;
         }
     }
     private string password;
-    public string Password{
-        get{ return password;}
-        set{
+    public string Password
+    {
+        get { return password; }
+        set
+        {
             Token = (value + username).GetStableHashCode();
             password = value;
         }
@@ -28,20 +32,33 @@ public class User : ISaveable
     {
         Username = username;
         Password = password;
+        Profile = File.ReadAllBytes("Static/Images/Profile/Default.jpeg");
     }
 
     public void Load(Byte[] data)
     {
-        var str = System.Text.Encoding.UTF8.GetString(data);
-        var split = str.Split(':');
-        Username = split[0];
-        Password = split[1];
-        Token = Int32.Parse(split[2]);
+        using (BinaryReader r = new BinaryReader(new MemoryStream(data)))
+        {
+            int length = r.ReadInt32();
+            Profile = r.ReadBytes(length);
+            Username = r.ReadString();
+            Password = r.ReadString();
         }
+    }
 
     public byte[] Save()
     {
-        return System.Text.Encoding.UTF8.GetBytes(ToString());
+        using (var m = new MemoryStream())
+        {
+            using (BinaryWriter b = new BinaryWriter(m))
+            {
+                b.Write(Profile.Length);
+                b.Write(Profile);
+                b.Write(Username);
+                b.Write(Password);
+                return m.ToArray();
+            }
+        }
     }
     public override string ToString()
     {

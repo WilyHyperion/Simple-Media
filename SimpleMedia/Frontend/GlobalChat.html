@@ -49,6 +49,48 @@
       <input type="text" id="message" />
     </div>
     <script>
+      try {
+      function process(res) {
+        if (res === undefined) {
+          return;
+        }
+        let html = "";
+        let username = res.split("(")[0];
+          html +=
+            "<li> <img src = " +
+            window.location.host +
+            "/api/getotherprofile?username=" +
+            username +
+            ">" +
+            res.split("\n")[i] +
+            "</li>";
+        document.getElementById("chat").innerHTML += html;
+        }
+      registeragain();
+      function registeragain(){
+        fetch(window.location.href, {
+          method: "POST",
+          headers: {
+            type: "register",
+            amount: "10",
+          },
+        }).then( function(response){
+          alert(response);
+          return response.text();
+        }).then(function(text){
+          alert(text);
+          process(text);
+          registeragain();
+        });
+      }
+
+    } catch (error) {
+      alert(error);
+        alert(error.message);
+      }
+      
+      /*
+
       setInterval(() => {
         update();
       }, 1000);
@@ -72,11 +114,14 @@
               if(text.split("\n")[i] === undefined){
                 continue;
               }
-              html += "<li>" + text.split("\n")[i] + "</li>";
+
+            let username = text.split("\n")[i].split("(")[0];
+            
+              html += "<li> <img src = "+ window.location.host + "/api/getotherprofile?username=" + username + ">"  + text.split("\n")[i] + "</li>";
             }
             document.getElementById("chat").innerHTML = html;
           });
-      }
+      */
       document
         .getElementById("message")
         .addEventListener("keyup", function (event) {
