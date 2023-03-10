@@ -20,7 +20,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: 70vh;
+        height: 90vh;
         width: 100vw;
       }
       #chat li {
@@ -49,20 +49,19 @@
       <input type="text" id="message" />
     </div>
     <script>
-      try {
-      function process(res) {
+    async function process(res) {
         if (res === undefined) {
           return;
         }
         let html = "";
         let username = res.split("(")[0];
-          html +=
-            "<li> <img src = " +
-            window.location.host +
+        html +=
+            "<li> <img width = 50; height = 50; src = " +
+            window.location.origin +
             "/api/getotherprofile?username=" +
             username +
             ">" +
-            res.split("\n")[i] +
+            res +
             "</li>";
         document.getElementById("chat").innerHTML += html;
         }
@@ -71,22 +70,14 @@
         fetch(window.location.href, {
           method: "POST",
           headers: {
-            type: "register",
-            amount: "10",
+            type: "register"
           },
         }).then( function(response){
-          alert(response);
           return response.text();
         }).then(function(text){
-          alert(text);
           process(text);
           registeragain();
-        });
-      }
-
-    } catch (error) {
-      alert(error);
-        alert(error.message);
+          });
       }
       
       /*
@@ -127,9 +118,7 @@
         .addEventListener("keyup", function (event) {
           if (event.keyCode === 13) {
             let m = document.getElementById("message");
-            document.getElementById("chat").innerHTML +=
-              "<li>" + m.value + "</li>";
-            fetch(window.location.href, {
+          fetch(window.location.href, {
               method: "POST",
               headers: {
                 type: "send",

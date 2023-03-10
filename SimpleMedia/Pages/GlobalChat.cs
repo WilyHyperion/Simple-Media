@@ -23,6 +23,7 @@ public class Chat : LoggedPage
             Messages.Add(m);
             for(int i = 0; i < listeners.Count(); i++)
             {
+                Console.WriteLine("Sending message to listener");
                 HttpListenerResponse r = listeners[i];
                 if(r == null || !r.OutputStream.CanWrite)
                 {
@@ -30,11 +31,19 @@ public class Chat : LoggedPage
                     i--;
                     continue;
                 }
+                try{
                 r.OutputStream.Write(m.ToString().GetBytes(), 0, m.ToString().Length);
                 r.OutputStream.Close();
                 listeners.RemoveAt(i);
-                i--;
-            }
+                   i--;
+            
+                }catch(Exception e)
+                {
+                    Console.WriteLine("Listner Lost");
+                    listeners.RemoveAt(i);
+                    i--;
+                }
+             }
             
         }
         else if (request.Headers["type"] == "register")

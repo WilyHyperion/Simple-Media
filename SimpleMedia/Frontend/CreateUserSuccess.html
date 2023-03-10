@@ -34,10 +34,11 @@
                 var output = document.getElementById("output");
                 output.src = reader.result;
             }
+            reader.readAsDataURL(event.target.files[0]);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", (window.location.origin + "/api/changeprofile"), true);
             xhr.send(await event.target.files[0].arrayBuffer());
-            reader.readAsDataURL(event.target.files[0]);
+            
         }
     </script>
 </body>
