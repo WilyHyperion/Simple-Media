@@ -24,7 +24,7 @@
 
 <body>
     <h1>Welcome {{USERNAME}} , account created!</h1>
-    <input type="file" id="pfp" name="filename" onchange="FileUpload()">
+    <input type="file" accept="image/*" id="pfp" name="filename" onchange="FileUpload()">
     <img id="output" width="200" height="200">
     <script>
 
@@ -37,8 +37,12 @@
             reader.readAsDataURL(event.target.files[0]);
             var xhr = new XMLHttpRequest();
             xhr.open("POST", (window.location.origin + "/api/changeprofile"), true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log(xhr.responseText);
+                }
+            }
             xhr.send(await event.target.files[0].arrayBuffer());
-            
         }
     </script>
 </body>

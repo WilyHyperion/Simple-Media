@@ -36,6 +36,7 @@ namespace SimpleMedia
                     }
                 }
             }
+                Console.WriteLine("Test");
             return null;
         }
         public static bool LoggedIn(HttpListenerRequest request)

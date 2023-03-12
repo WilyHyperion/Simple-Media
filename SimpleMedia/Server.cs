@@ -93,13 +93,17 @@ namespace SimpleMedia
             }
             return s.GetBytes();
         }
+        public static byte[] ReadFile(String path)
+        {
+            return File.ReadAllBytes(path);
+        }
         internal static byte[] RenderFile(string v)
         {
             String s = File.ReadAllText(v);
             return s.GetBytes();
         }
         /// <summary>
-        /// returns a page that redirects to the given url 
+        /// returns a page that redirects to the given url
         /// </summary>
         /// <param name="v">the url</param>
         /// <returns></returns>
@@ -109,5 +113,10 @@ namespace SimpleMedia
             return File.ReadAllText("Frontend/Redirect.html").Replace("{{URL}}", v).GetBytes();
         }
 
+        internal static bool FileExists(string url)
+        {
+            Console.WriteLine("Checking if file exists: " + url);
+            return File.Exists(url);
+        }
     }
 }
