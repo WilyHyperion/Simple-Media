@@ -8,6 +8,7 @@ Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eArgs) =>
     string input = Console.ReadLine();
     if (input == "Y")
     {
+        Console.WriteLine("Saving database...");
         Database.SaveAllObjects();
     }
     Environment.Exit(0);
@@ -24,7 +25,7 @@ if (args.Length > 0)
             {
                 Console.WriteLine("Username(or QUIT to quit): ");
                 string username = Console.ReadLine();
-                if (username == "QUIT")
+                if (username.ToLower() == "QUIT")
                 {
                     Database.SaveAllObjects();
                     break;

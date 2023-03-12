@@ -5,6 +5,7 @@ namespace SimpleMedia
         public GlobalMessage(String text, User sender)
         {
             Text = text;
+            this.Validate();
             Sender = sender;
             Time = DateTime.Now;
         }
@@ -30,6 +31,13 @@ namespace SimpleMedia
             writer.Write(Sender.Username);
             writer.Write(Time.Ticks);
             return ((MemoryStream)writer.BaseStream).ToArray();
+        }
+        public void Validate()
+        {
+            for(int i = 0; i < Util.invalidChars.Length; i++)
+            {
+                    Text = Text.Replace(Util.invalidChars[i], ' ');
+            }
         }
     }
 }

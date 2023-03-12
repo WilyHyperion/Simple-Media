@@ -53,7 +53,6 @@ namespace SimpleMedia
                 {
                     return false;
                 }
-                Console.WriteLine("Token: " + token);
                 foreach (User u in Database.GetObjects<User>())
                 {
                     if (u.Token == token)
@@ -68,23 +67,28 @@ namespace SimpleMedia
         {
             if (vaildUsername(username) && vaildPassword(password))
             {
-                Console.WriteLine("Creating user: " + username);
                 Database.AddObject(new User(username, password));
                 return true;
             }
             return false;
         }
-
+        //TODO more Vaildation
         private static bool vaildPassword(string password)
         {
             return true;
         }
-
         private static bool vaildUsername(string username)
         {
             foreach (User u in Database.GetObjects<User>())
             {
                 if (u.Username == username)
+                {
+                    return false;
+                }
+            }
+            for(int i = 0; i < Util.invalidChars.Length; i++)
+            {
+                if (username.Contains(Util.invalidChars[i]))
                 {
                     return false;
                 }
@@ -95,11 +99,8 @@ namespace SimpleMedia
         {
             foreach (User u in Database.GetObjects<User>())
             {
-
-                Console.WriteLine("Login: " + username);
                 if (u.Username == username && u.Password == password)
                 {
-                    Console.WriteLine("logged: " + username);
                     r.SetCookie(new Cookie("LoginToken", u.Token.ToString()));
                     return u;
 

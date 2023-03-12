@@ -1,7 +1,8 @@
 using System.Net;
 
 public static class Util{
-    public static bool isVaildImage(byte[] data){
+     public const string invalidChars = " !@#$%^&*()_+{}|:\"<>?[];',./\\";
+     public static bool isVaildImage(byte[] data){
         if (data.Length < 4)
         {
             return false;
@@ -84,7 +85,6 @@ public static class Util{
         }
         catch (System.Exception)
         {
-            Console.WriteLine("Error reading request body");
             return "";   
         }
         return body;
