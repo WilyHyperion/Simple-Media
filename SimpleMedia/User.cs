@@ -27,7 +27,6 @@ public class User : ISaveable
         }
     }
     public int Token;
-    //TODO check for symbols in name that cause issues like :
     public User(string username, string password)
     {
         Username = username;

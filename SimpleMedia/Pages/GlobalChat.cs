@@ -18,12 +18,11 @@ public class Chat : LoggedPage
     {
         if(request.Headers["type"] == "send")
         {
-            Console.WriteLine("Sending message");
             GlobalMessage m = new GlobalMessage(Util.ReadRequestBody(request), LoginManager.GetUser(request));
+            m.Validate();
             Messages.Add(m);
             for(int i = 0; i < listeners.Count(); i++)
             {
-                Console.WriteLine("Sending message to listener");
                 HttpListenerResponse r = listeners[i];
                 if(r == null || !r.OutputStream.CanWrite)
                 {
@@ -39,7 +38,6 @@ public class Chat : LoggedPage
             
                 }catch(Exception e)
                 {
-                    Console.WriteLine("Listner Lost");
                     listeners.RemoveAt(i);
                     i--;
                 }
@@ -48,7 +46,6 @@ public class Chat : LoggedPage
         }
         else if (request.Headers["type"] == "register")
         {
-            Console.WriteLine("Registering listener");
             listeners.Add(response);
             return null;
         }

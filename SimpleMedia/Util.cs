@@ -1,6 +1,8 @@
 using System.Net;
 
 public static class Util{
+
+    public const string invalidChars = " !@#$%^&*()_+{}|:\"<>?[];',./\\";
     public static byte[] GetBytes(this string str){
         return System.Text.Encoding.UTF8.GetBytes(str);
     }
@@ -35,7 +37,6 @@ public static class Util{
         }
         catch (System.Exception)
         {
-            Console.WriteLine("Error reading request body");
             return "";   
         }
         return body;

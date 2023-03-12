@@ -6,23 +6,15 @@ using SimpleMedia.Abstract;
 public class ChangeProfile : LoggedPage{
     public override byte[] PostLogged(HttpListenerRequest request, HttpListenerResponse response)
     {
-        Console.WriteLine("Change Profile");
         User u = LoginManager.GetUser(request);
         if (u == null)
         {
-            Console.WriteLine("User not found");
             return new byte[0];
         }
-        Console.WriteLine("User found");
         MemoryStream ms = new MemoryStream();
         request.InputStream.CopyTo(ms);
         byte[] data = ms.ToArray();
         u.Profile = data;
-        var s = File.Create("Default.jpeg");
-        s.Write(data, 0, data.Length);
-        s.Close();
-        s.Dispose();
-        Console.WriteLine("Profile Changed");
         return "Success".GetBytes();
     }
 }

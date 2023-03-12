@@ -8,7 +8,6 @@ public class UserProfile : LoggedPage{
     {
         //return File.ReadAllBytes("/workspaces/Simple-Media/SimpleMedia/Image/selfie.jpg");
         User u = LoginManager.GetUser(request);
-        Console.WriteLine("User Profile: " + u.Profile.Length);
         return u.Profile;
     }
     public override byte[] PostLogged(HttpListenerRequest request, HttpListenerResponse response)

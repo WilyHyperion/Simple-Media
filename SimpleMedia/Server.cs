@@ -41,7 +41,6 @@ namespace SimpleMedia
                         Console.WriteLine("Request to: " + request.Url + " Type of request: " + request.HttpMethod);
                         Byte[] r = getResponse(request, response);
                         if(r == null) {
-                            Console.WriteLine("null response");
                             continue;
                         }
                         String rs = System.Text.Encoding.Default.GetString(r);
@@ -55,8 +54,8 @@ namespace SimpleMedia
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("Runtime Exc" + e);
-                        break;
+                        Console.WriteLine("caught an exception in Main loop");
+                        continue;
                     }
                 }
             }
