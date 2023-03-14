@@ -6,7 +6,11 @@ using SimpleMedia.Abstract;
 public class GetOtherProfile : Page{
     public override byte[] Get(HttpListenerRequest request, HttpListenerResponse response)
     {
-        string username = request.QueryString["username"];
+        string? username = request.QueryString["username"];
+        if (username == null)
+        {
+            return new byte[0];
+        }
         User u = LoginManager.GetUser(username);
         if (u == null)
         {

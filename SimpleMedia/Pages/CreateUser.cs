@@ -16,7 +16,11 @@ public class CreateUser : Page
     public override byte[] Post(HttpListenerRequest request, HttpListenerResponse response)
     {
         string body = Util.ReadRequestBody(request);
-     Dictionary<string, dynamic> data = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(body);
+     Dictionary<string, dynamic>? data = JsonSerializer.Deserialize<Dictionary<string, dynamic>>(body);
+        if (data == null)
+        {
+            return "Failed".GetBytes();
+        }
         string username = data["username"].ToString();
         string password = data["password"].ToString();
         if (LoginManager.CreateUser(username, password))

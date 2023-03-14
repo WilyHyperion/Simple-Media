@@ -1,35 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Created User</title>
+    <title>Profile</title>
     <style>
-        body {
-            background-color: #f1f1f1;
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 16px;
-            color: #333;
-        }
-
-        h1 {
-            font-size: 2em;
-            color: #333;
+        body{
             text-align: center;
         }
     </style>
 </head>
-
 <body>
-    <h1>Welcome {{USERNAME}} , account created!</h1>
-    <h2>Upload a Profile picture</h2>
+    {{Username}}'s Profile
+    <img id = "output" src="/api/UserProfile" alt="Profile Picture" width="500px" height ="500px">
+    <br>
+    <a href="/logout">Logout</a>
     <input type="file" accept="image/*" id="pfp" name="filename" onchange="FileUpload()">
-    <img id="output" width="200" height="200">
     <script>
-
-        async function FileUpload() {
+         async function FileUpload() {
             var reader = new FileReader();
             reader.onload = function () {
                 var output = document.getElementById("output");
@@ -44,8 +33,7 @@
                 }
             }
             xhr.send(await event.target.files[0].arrayBuffer());
-        }
+        }1
     </script>
 </body>
-
 </html>

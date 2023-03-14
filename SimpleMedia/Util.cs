@@ -1,8 +1,8 @@
+namespace SimpleMedia;
 using System.Net;
-
 public static class Util{
      public const string invalidChars = " !@#$%^&*()_+{}|:\"<>?[];',./\\";
-     public static bool isVaildImage(byte[] data){
+    public static bool isVaildImage(byte[] data){
         if (data.Length < 4)
         {
             return false;
@@ -69,7 +69,7 @@ public static class Util{
                 hash2 = ((hash2 << 5) + hash2) ^ str[i+1];
             }
 
-            return hash1 + (hash2*1566083941);
+            return hash1 + (hash2*1566073941);
         }
     }
     public static string ReadRequestBody(HttpListenerRequest request){
