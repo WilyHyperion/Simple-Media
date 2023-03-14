@@ -1,48 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CreateUser/title>
-</head>
-<body>
-    <div id = "error"></div>
-    <input type="text" id="username" placeholder="Username" />
-    <input type="password" id="password" placeholder="Password"/>
-    <input type="password" id="password2" placeholder="Confirm Password"/>
-    <button id="createUser">Create User</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create User</title>
+    <style>
+      :root {
+        --size: 100px;
+      }
+      #error {
+        color: red;
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+        font-size: 16px;
+        width: 100%;
+      }
+
+      button {
+        background-color: #4caf50;
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #3e8e41;
+      }
+      .pageCenter {
+        background-color: whitesmoke;
+        padding: 50px;
+        border-radius: 5px;
+        width: 400px;
+        height: 400px;
+        margin-top: 100px;
+      }
+      h1 {
+        text-align: center;
+      }
+      #Background ::after {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        -webkit-filter: blur(10px);
+        -moz-filter: blur(10px);
+        -o-filter: blur(10px);
+        -ms-filter: blur(10px);
+        filter: blur(10px);
+      }
+      #Background {
+        z-index: 3;
+        display: grid;
+        place-items: center;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        background-image: radial-gradient(grey var(--size), black 95%);
+      }
+      #Fade {
+        pointer-events: none;
+        opacity: 0;
+        background: #000;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        position: fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="Fade"></div>
+    <div id="Background">
+      <div class="pageCenter">
+        <h1>Create User</h1>
+        <div id="error"></div>
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <input type="password" id="password2" placeholder="Confirm Password" />
+        <button id="createUser">Create User</button>
+      </div>
+    </div>
+
     <script>
-        document.getElementById("createUser").addEventListener("click", () => {
-            let username = document.getElementById("username").value;
-            let password = document.getElementById("password").value;
-            let password2 = document.getElementById("password2").value;
-            if (password == password2) {
-                fetch(window.location.href, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        username: username,
-                        password: password
-                    }),
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }).then(function(response){
-                    return response.text();
-                }).then(function(response){
-                    
-                    if(response == "Failed"){
-                        document.getElementById("error").innerHTML = "Username already exists";
-                    } else {
-                        document.open('text/html');
-                        document.write(response);
-                        document.close();
-                    }
-                });
+      let time = 0.0;
+      var r = document.querySelector(":root");
+      setInterval(() => {
+        time += 0.05;
+        var rs = getComputedStyle(r);
+        r.style.setProperty("--size", Math.sin(time) * 100 + "px");
+      }, 5);
+      document.getElementById("createUser").addEventListener("click", () => {
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+        let password2 = document.getElementById("password2").value;
+        if (password == password2) {
+          fetch(window.location.href, {
+            method: "POST",
+            body: JSON.stringify({
+              username: username,
+              password: password,
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then(function (response) {
+              return response.text();
+            })
+            .then(function (response) {
+              if (response == "Failed") {
+                document.getElementById("error").innerHTML =
+                  "Username already exists";
+              } else {
+                document.getElementById("Fade").style.animation =
+                  "fadeout 1s forwards";
+                document.getElementById("Fade").style.opacity = 1;
+                // document.open("text/html");
+                //  document.write(response);
+                //   document.close();
+              }
+            });
         } else {
-            alert("Passwords do not match");
+          document.getElementById("error").innerHTML = "Passwords do not match";
         }
-    });
+      });
     </script>
-</body>
+  </body>
 </html>

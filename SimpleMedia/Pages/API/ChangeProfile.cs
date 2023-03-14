@@ -14,6 +14,10 @@ public class ChangeProfile : LoggedPage{
         MemoryStream ms = new MemoryStream();
         request.InputStream.CopyTo(ms);
         byte[] data = ms.ToArray();
+        //make sure its an image file
+        if( !Util.isVaildImage(data)){
+            return "Invalid image".GetBytes();
+        }
         u.Profile = data;
         return "Success".GetBytes();
     }

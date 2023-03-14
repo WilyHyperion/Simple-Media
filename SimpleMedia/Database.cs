@@ -26,7 +26,9 @@ public static class Database{
         using(var stream = new FileStream(path, FileMode.Create)){
             using(var writer = new BinaryWriter(stream)){
                 foreach(var type in objects.Keys){
-                    writer.Write(type.FullName);
+                    string? fullName = type.FullName;
+                    if(fullName == null) continue;
+                    writer.Write(fullName);
                     writer.Write(objects[type].Count);
                     foreach(var obj in objects[type]){
                         var data = obj.Save();
@@ -50,6 +52,7 @@ public static class Database{
                     for(int i = 0; i < count; i++){
                         if(type != null){
                         var obj = Activator.CreateInstance(type) as ISaveable;
+                        if(obj == null) continue;
                         obj.Load(reader.ReadBytes(reader.ReadInt32()));
                         AddObject(obj);
                         }
