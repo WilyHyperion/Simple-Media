@@ -54,7 +54,7 @@ namespace SimpleMedia
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("caught an exception in Main loop");
+                        Console.WriteLine("caught an exception in Main loop: " + e);
                         continue;
                     }
                 }

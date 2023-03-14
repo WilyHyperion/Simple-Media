@@ -8,7 +8,7 @@ namespace SimpleMedia
         {
             foreach (User u in Database.GetObjects<User>())
             {
-                if (u.Username == username)
+                if (u.Username.ToLower() == username.ToLower())
                 {
                     return u;
                 }
@@ -80,7 +80,7 @@ namespace SimpleMedia
         {
             foreach (User u in Database.GetObjects<User>())
             {
-                if (u.Username == username)
+                if (u.Username.ToLower() == username.ToLower())
                 {
                     return false;
                 }
