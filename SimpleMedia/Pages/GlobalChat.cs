@@ -12,7 +12,20 @@ public class Chat : LoggedPage
     public static List<GlobalMessage> Messages;
     public override byte[] GetLogged(HttpListenerRequest request, HttpListenerResponse response)
     {
-        return Server.RenderFile("Frontend/GlobalChat.html");
+        String m = "";
+        for(int i =( Messages.Count() - 11); i < Messages.Count() ; i++)
+        {
+            if(i < 0)
+            {
+                continue; 
+            }
+
+            m += "<li>" + Messages[i].ToString() + "</li>";
+        }
+        Console.WriteLine(m);
+        return Server.RenderFile("Frontend/GlobalChat.html", new Dictionary<string, string>{
+            {"MESSAGES", m}
+        });
     }
     public override byte[] Post(HttpListenerRequest request, HttpListenerResponse response)
     {
@@ -21,6 +34,7 @@ public class Chat : LoggedPage
             GlobalMessage m = new GlobalMessage(Util.ReadRequestBody(request), LoginManager.GetUser(request));
             m.Validate();
             Messages.Add(m);
+            Database.AddObject(m);  
             for(int i = 0; i < listeners.Count(); i++)
             {
                 HttpListenerResponse r = listeners[i];
@@ -51,15 +65,25 @@ public class Chat : LoggedPage
         }
         else if(request.Headers["type"] == "get")
         {
+            int start = int.Parse(request.Headers["start"]);
             int amount = int.Parse(request.Headers["amount"]);
             String r = "";
-            for(int i = 0; i  < amount; i++)
+            Console.WriteLine("total messages: " + Messages.Count() + " start: " + start + " amount: " + amount);
+            for(int i = amount; i  > 0; i--)
             {
-                if(i >= Messages.Count())
+
+                if(start  - i >= Messages.Count())
                 {
-                    break;
+                    continue;
                 }
-                r += Messages[Messages.Count() - 1 - i].ToString() + "\n";
+                if(Messages.Count()  - start - i < 0)
+                {
+                    Console.WriteLine("skipped at " + (Messages.Count() - start- i));
+                    continue;
+                }
+                Console.WriteLine("at : " + (Messages.Count() - 1 - amount- i));
+                r  += Messages[Messages.Count()  - start - i].ToString() + "\n";
+
             }
             return r.GetBytes();
         }

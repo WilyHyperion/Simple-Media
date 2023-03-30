@@ -1,5 +1,8 @@
 namespace SimpleMedia;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
+
 public static class Util{
      public const string invalidChars = " !@#$%^&*()_+{}|:\"<>?[];',./\\";
     public static bool isVaildImage(byte[] data){
@@ -54,22 +57,16 @@ public static class Util{
     public static byte[] GetBytes(this string str){
         return System.Text.Encoding.UTF8.GetBytes(str);
     }
-    public static int GetStableHashCode(this string str)
-    {
-        unchecked
+    public static string Hash(String s){
+        using (SHA256 sha256Hash = SHA256.Create())
         {
-            int hash1 = 5381;
-            int hash2 = hash1;
-
-            for(int i = 0; i < str.Length && str[i] != '\0'; i += 2)
+            byte[] bytes = sha256Hash.ComputeHash(s.GetBytes());
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
             {
-                hash1 = ((hash1 << 5) + hash1) ^ str[i];
-                if (i == str.Length - 1 || str[i+1] == '\0')
-                    break;
-                hash2 = ((hash2 << 5) + hash2) ^ str[i+1];
+                builder.Append(bytes[i].ToString("x2"));
             }
-
-            return hash1 + (hash2*1566073941);
+            return builder.ToString();
         }
     }
     public static string ReadRequestBody(HttpListenerRequest request){

@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Global Chat</title>
     <style>
+      #chat a{
+        text-decoration: none;
+        color: white;
+      }
       #chat {
         background-color: #424B54;
         list-style: none;
@@ -45,10 +49,13 @@
   <body>
     <h1>Global Chat</h1>
     <div id="chatContainer">
-      <ol id="chat"></ol>
+      <ol id="chat">
+        {{MESSAGES}}
+      </ol>
       <input type="text" id="message" />
     </div>
     <script>
+    let list = document.getElementById("chat");
     async function process(res) {
         if (res === undefined) {
           return;
@@ -56,14 +63,11 @@
         let html = "";
         let username = res.split("(")[0];
         html +=
-            "<li> <img width = 50; height = 50; src = " +
-            window.location.origin +
-            "/api/getotherprofile?username=" +
-            username +
-            ">" +
+            "<li>" +
             res +
             "</li>";
         document.getElementById("chat").innerHTML += html;
+        ScrollList();
         }
       registeragain();
       function registeragain(){
@@ -79,6 +83,45 @@
           registeragain();
           });
       }
+      function ScrollList() {
+        list.scrollTop = list.scrollHeight;
+      }
+      list.addEventListener("scroll", function(e){
+        if(list.scrollTop === 0){ 
+          loadMoreMessages(10)
+        }
+      })
+      function loadMoreMessages(amount){
+        fetch(window.location.href, {
+          method: "POST",
+          headers: {
+            type: "get",
+            amount: amount,
+            start : document.getElementById("chat").children.length
+          },
+        })
+          .then(function (response) {
+            return response.text();
+          })
+          .then(function (text) {
+            let s = "";
+           for(let l of text.split("\n")){
+            s += "<li>" + l + "</li>";
+            }
+            try {
+            var scroll = list.scrollHeight;
+
+            document.getElementById("chat").innerHTML = s + document.getElementById("chat").innerHTML;
+            var scrollDiff = list.scrollHeight - scroll;
+            list.scrollTop += scrollDiff;        
+          } catch (error) {
+             alert(error.message); 
+            }
+            
+          });
+
+      }
+      ScrollList();
       /*
 
       setInterval(() => {

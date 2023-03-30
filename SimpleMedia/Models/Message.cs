@@ -2,6 +2,9 @@ namespace SimpleMedia
 {
     public class GlobalMessage : ISaveable
     {
+        public GlobalMessage()
+        {
+        }
         public GlobalMessage(String text, User sender)
         {
             Text = text;
@@ -14,7 +17,7 @@ namespace SimpleMedia
         public DateTime Time { get; set; }
         public override string ToString()
         {
-            return $"{Sender.Username} ({Time.ToShortTimeString()}): {Text}";
+            return $"<img width = '50px' height = '50px' src = '/api/getotherprofile?username={Sender.Username}'> <a href = /profile/{Sender.Username}>{Sender.Username} </a> ({Time.ToShortTimeString()}): {Text}";
         }
         public void Load(byte[] data)
         {

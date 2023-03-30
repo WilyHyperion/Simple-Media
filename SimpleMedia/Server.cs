@@ -82,7 +82,17 @@ namespace SimpleMedia
             }
             return "404 Not Found".GetBytes();
         }
-
+        internal static byte[] RenderFile(string v, User p){
+            String s = File.ReadAllText(v);
+            String[] replace = typeof(User).GetProperties().Select(x => x.Name).ToArray();
+            foreach (String r in replace)
+            {
+                Console.WriteLine("Replacing " + r + " with " + p.GetType().GetProperty(r).GetValue(p));
+                s = s.Replace("{{" + r + "}}", p.GetType().GetProperty(r).GetValue(p).ToString());
+            }
+            return s.GetBytes();
+        }
+        
         internal static byte[] RenderFile(string v, Dictionary<string, string> p)
         {
             String s = File.ReadAllText(v);
@@ -108,13 +118,11 @@ namespace SimpleMedia
         /// <returns></returns>
         internal static byte[] Redirect(string v)
         {
-            Console.WriteLine("Redirecting to " + v);
             return File.ReadAllText("Frontend/Redirect.html").Replace("{{URL}}", v).GetBytes();
         }
 
         internal static bool FileExists(string url)
         {
-            Console.WriteLine("Checking if file exists: " + url);
             return File.Exists(url);
         }
     }

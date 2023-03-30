@@ -17,7 +17,8 @@ namespace SimpleMedia.Pages{
                 username = LoginManager.GetUser(username).Username;
 
             return Server.RenderFile("Frontend/Profile.html", new Dictionary<string, string>(){
-                {"USER", username}
+                {"USER", username},
+                {"BIO", LoginManager.GetUser(username).Bio}
             });
             }
             return "404".GetBytes();

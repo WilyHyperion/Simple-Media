@@ -19,10 +19,10 @@ namespace SimpleMedia
         {
             if (r.Cookies["LoginToken"] != null && r.Cookies["LoginToken"].Value != "")
             {
-                int token = 0;
+                String token = "";
                 try
                 {
-                    token = Int32.Parse(r.Cookies["LoginToken"].Value);
+                    token = (r.Cookies["LoginToken"].Value);
                 }
                 catch (System.FormatException)
                 {
@@ -44,10 +44,10 @@ namespace SimpleMedia
 
             if (request.Cookies["LoginToken"] != null && request.Cookies["LoginToken"].Value != "")
             {
-                int token = 0;
+                 String token = "";
                 try
                 {
-                    token = Int32.Parse(request.Cookies["LoginToken"].Value);
+                    token = request.Cookies["LoginToken"].Value;
                 }
                 catch (System.FormatException)
                 {

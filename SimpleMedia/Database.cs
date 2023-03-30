@@ -14,6 +14,13 @@ public static class Database{
     public static void ClearDictionary(){
         objects.Clear();
     }
+    public static void RemoveObject(ISaveable obj){
+        if(objects.ContainsKey(obj.GetType())){
+            if(!(objects[obj.GetType()].Remove(obj))){
+                Console.WriteLine("Failed to remove object");
+            }
+        }
+    }
     private static Dictionary<Type, List<ISaveable>> objects = new Dictionary<Type, List<ISaveable>>();
     public static void AddObject(ISaveable obj){
         if(!objects.ContainsKey(obj.GetType())){
@@ -31,6 +38,7 @@ public static class Database{
                     writer.Write(fullName);
                     writer.Write(objects[type].Count);
                     foreach(var obj in objects[type]){
+                        if(obj == null) continue;
                         var data = obj.Save();
                         writer.Write(data.Length);
                         writer.Write(data);

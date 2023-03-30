@@ -4,6 +4,10 @@ public class User : ISaveable
     public User(){
         
     }
+    public string Bio {
+        get;
+        set;
+    }
     public byte[] Profile;
     private string username;
     public string Username
@@ -11,7 +15,7 @@ public class User : ISaveable
         get { return username; }
         set
         {
-            Token = (value + Password).GetStableHashCode();
+            Token = Util.Hash((value + Password));
             username = value;
         }
     }
@@ -21,16 +25,17 @@ public class User : ISaveable
         get { return password; }
         set
         {
-            Token = (value + username).GetStableHashCode();
+            Token = Util.Hash(value + username);
             password = value;
         }
     }
-    public int Token;
+    public String Token;
     public User(string username, string password)
     {
         Username = username;
         Password = password;
         Profile = File.ReadAllBytes("Static/Images/Profile/Default.jpeg");
+        Bio = "nothing";
     }
 
     public void Load(Byte[] data)
@@ -41,6 +46,7 @@ public class User : ISaveable
             Profile = r.ReadBytes(length);
             Username = r.ReadString();
             Password = r.ReadString();
+            Bio = r.ReadString();
         }
     }
 
@@ -54,12 +60,13 @@ public class User : ISaveable
                 b.Write(Profile);
                 b.Write(Username);
                 b.Write(Password);
+                b.Write(Bio);
                 return m.ToArray();
             }
         }
     }
     public override string ToString()
     {
-        return $"{Username}:{Password}:{Token}";
+        return $"{Username}:{Password}:{Token}:{Bio}";
     }
 }

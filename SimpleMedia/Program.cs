@@ -19,26 +19,53 @@ if (args.Length > 0)
 {
     foreach (var arg in args)
     {
-        if (arg == "--UserCreate")
+        if(arg == "--RemoveMessages"){
+            Console.WriteLine("Hit Enter to confirm");
+            Console.ReadLine();
+
+            foreach(var message in Database.GetObjects<GlobalMessage>()){
+                Database.RemoveObject(message);
+                Database.SaveAllObjects();
+            }
+
+        }
+        else if(arg == "--RemoveAllUsers"){
+            Console.WriteLine("Hit Enter to confirm");
+            Console.ReadLine();
+
+            foreach(var user in Database.GetObjects<User>()){
+                Database.RemoveObject(user);
+                Database.SaveAllObjects();
+            }
+
+        }
+        else if (arg == "--UserCreate")
         {
             while (true)
             {
                 Console.WriteLine("Username(or QUIT to quit): ");
                 string username = Console.ReadLine();
-                if (username.ToLower() == "QUIT")
+                if (username.ToLower() == "quit")
                 {
                     Database.SaveAllObjects();
                     break;
                 }
                 Console.WriteLine("Password: ");
                 string password = Console.ReadLine();
-                if (LoginManager.CreateUser(username, password))
+                bool t = LoginManager.CreateUser(username, password);
+                if (t)
                 {
                     Console.WriteLine("User created");
                 }
                 else
                 {
                     Console.WriteLine("User creation failed");
+                }
+                User u = LoginManager.GetUser(username);
+                if (u != null)
+                {
+                    Console.WriteLine("Bio: ");
+                    u.Bio = Console.ReadLine();
                 }
             }
         }
