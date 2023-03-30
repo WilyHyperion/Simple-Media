@@ -68,7 +68,6 @@ public class Chat : LoggedPage
             int start = int.Parse(request.Headers["start"]);
             int amount = int.Parse(request.Headers["amount"]);
             String r = "";
-            Console.WriteLine("total messages: " + Messages.Count() + " start: " + start + " amount: " + amount);
             for(int i = amount; i  > 0; i--)
             {
 
@@ -78,10 +77,8 @@ public class Chat : LoggedPage
                 }
                 if(Messages.Count()  - start - i < 0)
                 {
-                    Console.WriteLine("skipped at " + (Messages.Count() - start- i));
                     continue;
                 }
-                Console.WriteLine("at : " + (Messages.Count() - 1 - amount- i));
                 r  += Messages[Messages.Count()  - start - i].ToString() + "\n";
 
             }
