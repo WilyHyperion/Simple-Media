@@ -22,7 +22,6 @@ public class Chat : LoggedPage
 
             m += "<li>" + Messages[i].ToString() + "</li>";
         }
-        Console.WriteLine(m);
         return Server.RenderFile("Frontend/GlobalChat.html", new Dictionary<string, string>{
             {"MESSAGES", m}
         });

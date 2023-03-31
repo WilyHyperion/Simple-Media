@@ -2,15 +2,22 @@ namespace SimpleMedia;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web;
 
 public static class Util{
+    public static String EscapeString(String s){
+        s = s.Replace("<", " &lt; ");
+        s = s.Replace(">", " &gt; ");
+        s = s.Replace("\"", " &quot; ");
+        s = s.Replace("'", " &#39; ");
+        return s;
+    }
      public const string invalidChars = " !@#$%^&*()_+{}|:\"<>?[];',./\\";
     public static bool isVaildImage(byte[] data){
         if (data.Length < 4)
         {
             return false;
         }
-        //png
         if (!isGif(data) && !isJpeg(data) && !isPng(data))
         {
             Console.WriteLine("Invalid file");
@@ -23,7 +30,6 @@ public static class Util{
         {
             return false;
         }
-        //png
         if (data[0] != 0x89 || data[1] != 0x50 || data[2] != 0x4E || data[3] != 0x47)
         {
             return false;

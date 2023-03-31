@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
 </head>
+
 <body>
     <h1>Edit {{Username}}'s Profile</h1>
-    <div id = "bio">
+    <div id="bio">
         {{Bio}}
     </div>
-    <button id = "edit" onclick="editBio()">Edit</button>
+    <button id="edit" onclick="editBio()">Edit</button>
     <script>
-        function editBio(){
+        function editBio() {
             let bio = document.getElementById("bio");
             let textarea = document.createElement("textarea");
             textarea.value = bio.innerHTML;
@@ -23,8 +25,7 @@
             edit.innerHTML = "Save";
             edit.onclick = saveBio;
         }
-        function saveBio(){
-            //post the server at /api/changeBio
+        function saveBio() {
             fetch("/api/changeBio", {
                 method: "POST",
                 headers: {
@@ -41,4 +42,5 @@
         }
     </script>
 </body>
+
 </html>

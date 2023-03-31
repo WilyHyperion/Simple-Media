@@ -67,6 +67,7 @@
             res +
             "</li>";
         document.getElementById("chat").innerHTML += html;
+
         ScrollList();
         }
       registeragain();
@@ -114,7 +115,6 @@
             var scrollDiff = list.scrollHeight - scroll;
             list.scrollTop += scrollDiff;        
           } catch (error) {
-             alert(error.message); 
             }
             
           });

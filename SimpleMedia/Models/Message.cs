@@ -8,7 +8,6 @@ namespace SimpleMedia
         public GlobalMessage(String text, User sender)
         {
             Text = text;
-            this.Validate();
             Sender = sender;
             Time = DateTime.Now;
         }
@@ -37,10 +36,11 @@ namespace SimpleMedia
         }
         public void Validate()
         {
-            for(int i = 0; i < Util.invalidChars.Length; i++)
+            if (Text.Length > 200)
             {
-                    Text = Text.Replace(Util.invalidChars[i], ' ');
+                Text = Text.Substring(0, 200);
             }
+            Text = Util.EscapeString(Text);
         }
     }
 }

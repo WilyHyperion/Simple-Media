@@ -13,7 +13,7 @@ public class ChangeBio : LoggedPage{
         }
         MemoryStream ms = new MemoryStream();
         request.InputStream.CopyTo(ms);
-        u.Bio = System.Text.Encoding.UTF8.GetString(ms.ToArray());
+        u.Bio = Util.EscapeString(System.Text.Encoding.UTF8.GetString(ms.ToArray()));
         return "Success".GetBytes();
     }
 }

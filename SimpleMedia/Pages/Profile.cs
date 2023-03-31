@@ -4,15 +4,19 @@ using System.Linq;
 using System.Net;
 using SimpleMedia.Abstract;
 namespace SimpleMedia.Pages{
-    public class Profile : LoggedPage{
+    public class Profile : Page{
         public override bool isCurrentPage(HttpListenerRequest request)
         {
             return request.Url.AbsolutePath.StartsWith("/profile/");
         }
-        public override byte[] GetLogged(HttpListenerRequest request, HttpListenerResponse response)
+        public override byte[] Get(HttpListenerRequest request, HttpListenerResponse response)
         {
+            if(LoginManager.LoggedIn(request)){
+                if(LoginManager.GetUser(request).Username == request.Url.AbsolutePath.Split('/').Last()){
+                    return Server.Redirect("/editprofile");
+                }
+            }
             string username = request.Url.AbsolutePath.Split('/').Last();
-            Console.WriteLine("Username: " + username);
             if(LoginManager.GetUser(username) != null){
                 username = LoginManager.GetUser(username).Username;
 
