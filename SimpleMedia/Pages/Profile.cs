@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using SimpleMedia.Abstract;
-namespace SimpleMedia.Pages{
+using SimpleMedia.Models.Abstract;
+namespace SimpleMedia.Models.Pages{
     public class Profile : Page{
         public override bool isCurrentPage(HttpListenerRequest request)
         {
@@ -18,12 +18,17 @@ namespace SimpleMedia.Pages{
             }
             string username = request.Url.AbsolutePath.Split('/').Last();
             if(LoginManager.GetUser(username) != null){
-                username = LoginManager.GetUser(username).Username;
-
-            return Server.RenderFile("Frontend/Profile.html", new Dictionary<string, string>(){
+            username = LoginManager.GetUser(username).Username;
+            String posts = "";
+            foreach(Post p in Database.GetObjects<Post>().Where(x => x.Sender.Username == username)){
+                posts += "<h2>" +  p.Name+ "</h2> <p>" + p.Text + "</p>";
+            }
+            Byte[] userRendered = Server.RenderFile("Frontend/Profile.html", new Dictionary<string, string>(){
                 {"USER", username},
-                {"BIO", LoginManager.GetUser(username).Bio}
+                {"BIO", LoginManager.GetUser(username).Bio},
+                {"POSTS", posts}
             });
+            return userRendered;
             }
             return "404".GetBytes();
         }

@@ -1,7 +1,7 @@
 using System;
 using System.Net;
-using SimpleMedia.Abstract;
-namespace SimpleMedia.Pages
+using SimpleMedia.Models.Abstract;
+namespace SimpleMedia.Models.Pages
 {
     public class EditProfile : LoggedPage
     {

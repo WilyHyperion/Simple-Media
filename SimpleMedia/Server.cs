@@ -1,8 +1,8 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
-using SimpleMedia.Abstract;
-namespace SimpleMedia
+using SimpleMedia.Models.Abstract;
+namespace SimpleMedia.Models
 {
     public class Server
     {
@@ -46,9 +46,8 @@ namespace SimpleMedia
                         String rs = System.Text.Encoding.Default.GetString(r);
                         if (rs.Contains("<!DOCTYPE html>"))
                         {
-                           // response.AddHeader("Content-Type", "text/html");
+                              response.AddHeader("Content-Type", "text/html");
                         }
-                        response.AddHeader("Content-Type", "text/html");
                         response.OutputStream.Write(r, 0, r.Length);
                         response.OutputStream.Close();
                     }
@@ -101,6 +100,10 @@ namespace SimpleMedia
                 s = s.Replace("{{" + entry.Key + "}}", entry.Value);
             }
             return s.GetBytes();
+        }
+        public static String ReadFileText(String path)
+        {
+            return File.ReadAllText(path);
         }
         public static byte[] ReadFile(String path)
         {

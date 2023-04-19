@@ -1,6 +1,6 @@
 using System.Net;
 using System;
-namespace SimpleMedia.Abstract;
+namespace SimpleMedia.Models.Abstract;
 public abstract class Page
 {
 

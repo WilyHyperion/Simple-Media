@@ -1,4 +1,4 @@
-namespace SimpleMedia;
+namespace SimpleMedia.Models;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;

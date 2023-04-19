@@ -1,8 +1,8 @@
-namespace SimpleMedia.Pages;
+namespace SimpleMedia.Models.Pages;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using SimpleMedia.Abstract;
+using SimpleMedia.Models.Abstract;
 public class Chat : LoggedPage
 {
     List<HttpListenerResponse> listeners = new List<HttpListenerResponse>();

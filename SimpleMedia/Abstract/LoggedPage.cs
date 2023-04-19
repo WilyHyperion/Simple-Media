@@ -1,4 +1,4 @@
-namespace SimpleMedia.Abstract {
+namespace SimpleMedia.Models.Abstract {
     using System.Net;
     using System;
     public abstract class LoggedPage : Page {

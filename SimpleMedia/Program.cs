@@ -1,4 +1,4 @@
-﻿using SimpleMedia;
+﻿using SimpleMedia.Models;
 Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eArgs) =>
 {
     eArgs.Cancel = false;
@@ -14,12 +14,21 @@ Console.CancelKeyPress += new ConsoleCancelEventHandler((sender, eArgs) =>
     Environment.Exit(0);
 });
 
-SimpleMedia.Database.LoadAllObjects();
+SimpleMedia.Models.Database.LoadAllObjects();
 if (args.Length > 0)
 {
     foreach (var arg in args)
     {
-        if(arg == "--RemoveMessages"){
+        if(arg == "--ClearPosts"){
+            Console.WriteLine("Hit Enter to confirm");
+            Console.ReadLine();
+
+            foreach(var post in Database.GetObjects<Post>()){
+                Database.RemoveObject(post);
+                Database.SaveAllObjects();
+            }
+        }
+        else if(arg == "--RemoveMessages"){
             Console.WriteLine("Hit Enter to confirm");
             Console.ReadLine();
 
@@ -83,8 +92,8 @@ if (args.Length > 0)
     }
 }
 
-SimpleMedia.Database.LoadAllObjects();
+SimpleMedia.Models.Database.LoadAllObjects();
 
-SimpleMedia.Server s = new SimpleMedia.Server();
+SimpleMedia.Models.Server s = new SimpleMedia.Models.Server();
 Server.Instance = s;
 s.Start();

@@ -1,8 +1,8 @@
-namespace SimpleMedia.Pages.Api;
+namespace SimpleMedia.Models.Pages.Api;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using SimpleMedia.Abstract;
+using SimpleMedia.Models.Abstract;
 public class GetOtherProfile : Page{
     public override byte[] Get(HttpListenerRequest request, HttpListenerResponse response)
     {

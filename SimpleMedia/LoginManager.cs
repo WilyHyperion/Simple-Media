@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace SimpleMedia
+namespace SimpleMedia.Models
 {
     public static class LoginManager
     {

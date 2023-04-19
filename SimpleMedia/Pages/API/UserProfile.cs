@@ -1,8 +1,8 @@
-namespace SimpleMedia.Pages.Api;
+namespace SimpleMedia.Models.Pages.Api;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using SimpleMedia.Abstract;
+using SimpleMedia.Models.Abstract;
 public class UserProfile : LoggedPage{
     public override byte[] GetLogged(HttpListenerRequest request, HttpListenerResponse response)
     {

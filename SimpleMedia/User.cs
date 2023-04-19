@@ -1,4 +1,4 @@
-namespace SimpleMedia;
+namespace SimpleMedia.Models;
 public class User : ISaveable
 {
     public User(){

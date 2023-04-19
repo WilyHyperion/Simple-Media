@@ -1,7 +1,7 @@
 using System.Net;
-using SimpleMedia.Abstract;
+using SimpleMedia.Models.Abstract;
 
-namespace SimpleMedia.Pages;
+namespace SimpleMedia.Models.Pages;
 public class Logout : Page
 {
     public override byte[] Get(HttpListenerRequest request, HttpListenerResponse response)

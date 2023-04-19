@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using SimpleMedia.Abstract;
+using SimpleMedia.Models.Abstract;
 
-namespace SimpleMedia.Pages
+namespace SimpleMedia.Models.Pages
 {
     public class FavIcon : Page
     {

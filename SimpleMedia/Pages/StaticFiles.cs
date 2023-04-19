@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SimpleMedia.Abstract;
-using SimpleMedia;
+using SimpleMedia.Models.Abstract;
+using SimpleMedia.Models;
 using System.Net;
 
-namespace SimpleMedia.Pages
+namespace SimpleMedia.Models.Pages
 {
     public class StaticFiles : Page
     {

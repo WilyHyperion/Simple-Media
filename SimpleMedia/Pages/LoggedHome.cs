@@ -1,6 +1,6 @@
 using System.Net;
-using SimpleMedia;
-using SimpleMedia.Abstract;
+using SimpleMedia.Models;
+using SimpleMedia.Models.Abstract;
 
 public class LoggedHome : LoggedPage
 {

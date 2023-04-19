@@ -1,10 +1,10 @@
-namespace SimpleMedia.Pages;
-using SimpleMedia;
+namespace SimpleMedia.Models.Pages;
+using SimpleMedia.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using SimpleMedia.Abstract;
+using SimpleMedia.Models.Abstract;
 using System.Text.Json;
 
 public class CreateUser : Page

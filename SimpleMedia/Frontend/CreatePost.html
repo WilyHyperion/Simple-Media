@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: #F2F2F2;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+        }
+        input {
+            border: none;
+            background-color: #66717E;
+            display: block;
+            margin-bottom: 10px;
+        }
+        textarea {
+            background-color: #66717E;
+            display: flex;
+            width:90vw;
+            height: 300px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            
+            width: 100px;
+            border-radius: 10px;
+            background-color: grey;
+            color: #1E1E1E;
+        }
+        button {
+            transition: cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
+            width: 50px;
+            background-color: #66717E;
+            border: none;
+            display: block;
+            margin: 0 auto;
+        }
+        #form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50%;
+            margin: 0 auto;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1 >Create Post</h1>
+    <div id="form">
+        <label for="title">Title</label>
+        <input type="text" name="title" id="title">
+        <label for="content">Content</label>
+        <textarea name="content" id="content" cols="30" rows="10"></textarea>
+        <button value="Create Post">Post</button>
+</div> 
+            <script>
+                const button = document.querySelector('button');
+                
+                button.addEventListener('click', async () => {
+                    const title = document.querySelector('#title').value;
+                    const content = document.querySelector('#content').value;
+                    const response = await fetch('/API/MakePost', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name:   title,
+                            text: content
+                        })
+                    }).then(
+                        response => response.json()
+                    ).then(
+                        function(response) {
+                        window.location.href = '/posts/' + response.id
+                        }
+                    )
+                });
+
+            </script>
+</body>
+</html>

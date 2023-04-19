@@ -1,4 +1,4 @@
-namespace SimpleMedia;
+namespace SimpleMedia.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
