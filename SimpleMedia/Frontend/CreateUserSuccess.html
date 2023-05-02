@@ -19,12 +19,24 @@
             color: #333;
             text-align: center;
         }
+        h2 {
+            padding-top: 50px;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
     <h1>Welcome {{USERNAME}} , account created!</h1>
-    <h2>Upload a Profile picture</h2>
+    <h2>What now?</h2>
+    <ul>
+        <li>Go to your <a href = "/home"> home </a></li> 
+        <li>Go to <a href="/editprofile">Change Profile</a> and change your profile picture</li>
+        <li><a href = "/CreatePost">Make a post</a></li>
+        <li><a href = "/chat">Chat</a></li>
+        <li><a href = "/Browse"></a></li>
+
+    </ul>
     <input type="file" accept="image/*" id="pfp" name="filename" onchange="FileUpload()">
     <img id="output" width="200" height="200">
     <script>

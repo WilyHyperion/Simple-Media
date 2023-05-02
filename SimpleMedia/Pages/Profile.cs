@@ -23,6 +23,9 @@ namespace SimpleMedia.Models.Pages{
             foreach(Post p in Database.GetObjects<Post>().Where(x => x.Sender.Username == username)){
                 posts += "<h2>" +  p.Name+ "</h2> <p>" + p.Text + "</p>";
             }
+            if(posts == ""){
+                posts = "<h2>No posts yet</h2>";
+            }
             Byte[] userRendered = Server.RenderFile("Frontend/Profile.html", new Dictionary<string, string>(){
                 {"USER", username},
                 {"BIO", LoginManager.GetUser(username).Bio},
@@ -30,7 +33,7 @@ namespace SimpleMedia.Models.Pages{
             });
             return userRendered;
             }
-            return "404".GetBytes();
+            return "404 User not found".GetBytes();
         }
     }
 }
